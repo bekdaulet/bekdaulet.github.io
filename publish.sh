@@ -34,15 +34,21 @@ git push -q
 sha="$(git rev-parse --short HEAD)"
 echo "Pushed commit $sha. Waiting for GitHub Pages to rebuild..."
 
-# GitHub serves the new commit's files once the build finishes; poll the
-# page until index.html changes, up to about two minutes.
-before="$(curl -s "$SITE/" | md5 2>/dev/null || true)"
-for i in $(seq 1 24); do
+# Ask GitHub whether the Pages build for this commit has finished.
+REPO_API="https://api.github.com/repos/bekdaulet/bekdaulet.github.io/actions/runs?per_page=3"
+for i in $(seq 1 30); do
   sleep 5
-  now="$(curl -s "$SITE/" | md5 2>/dev/null || true)"
-  if [[ "$now" != "$before" ]]; then
-    echo "Live: $SITE"
-    exit 0
-  fi
+  state="$(curl -s "$REPO_API" | python3 -c "
+import sys, json
+sha = sys.argv[1]
+for r in json.load(sys.stdin).get('workflow_runs', []):
+    if r['head_sha'].startswith(sha):
+        print(r['status'], r['conclusion'] or '')
+        break
+" "$sha" 2>/dev/null || true)"
+  case "$state" in
+    "completed success") echo "Live: $SITE"; exit 0 ;;
+    completed*)          echo "Build finished with a problem ($state). Check https://github.com/bekdaulet/bekdaulet.github.io/actions"; exit 1 ;;
+  esac
 done
-echo "Pushed, but the live page has not changed yet. Give it another minute: $SITE"
+echo "Pushed, but the build is taking longer than usual. Check https://github.com/bekdaulet/bekdaulet.github.io/actions"
