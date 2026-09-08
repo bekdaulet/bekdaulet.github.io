@@ -1,4 +1,4 @@
-# bekdaulet.kz
+# bekdaulet.github.io
 
 Personal academic website of Bekdaulet Shukirgaliyev. Static HTML and CSS, hosted on GitHub Pages.
 
