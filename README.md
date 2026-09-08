@@ -24,9 +24,12 @@ Each page is one HTML file with the same section order. Search for the section i
 | Publications list | `<section id="publications">`, one `<li>` per paper |
 | Positions, education, awards | `<section id="experience">`, one `<li>` per row |
 | Teaching | `<section id="teaching">`, one card per university |
-| Address, emails, profile links | `<section id="contact">` |
+| Media appearances (video cards) | `<section id="media">`, one `<a class="video">` per video |
+| Address, emails, profiles, social media | `<section id="contact">` |
 
 To add a publication, copy an existing `<li>...</li>` block inside `<ol class="pubs">` and change the title, DOI link, authors, journal, and year. The numbering is automatic.
+
+To add a video, copy one `<a class="video" ...>...</a>` block inside `<div class="videos">` and change the two places that contain the YouTube video ID (the link and the thumbnail), the title, the channel, and the year. The first nine cards are visible by default; cards with `class="video more" hidden` appear after "Show all". Put new videos at the top and move the ninth card into the hidden group by adding `more" hidden` to its class. Update the number in the "Show all" button text if you like.
 
 The three language pages are independent. A change made in `index.html` must be repeated in `kk/index.html` and `ru/index.html` if it should appear in all languages.
 
