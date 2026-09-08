@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Бекдаулет Шукиргалиев — Астрофизик</title>
+  <meta name="description" content="Доктор Бекдаулет Шукиргалиев, вычислительный астрофизик, Назарбаев Университет, Астана. Формирование и эволюция звёздных скоплений, N-body моделирование, вычисления на GPU.">
+  <meta property="og:title" content="Бекдаулет Шукиргалиев — Астрофизик">
+  <meta property="og:description" content="Вычислительный астрофизик, Назарбаев Университет. Звёздные скопления, N-body моделирование, вычисления на GPU.">
+  <meta property="og:image" content="https://bekdaulet.github.io/assets/photo.jpg">
+  <meta property="og:url" content="https://bekdaulet.github.io/ru/">
+  <link rel="canonical" href="https://bekdaulet.github.io/ru/">
+  <link rel="alternate" hreflang="en" href="https://bekdaulet.github.io/">
+  <link rel="alternate" hreflang="kk" href="https://bekdaulet.github.io/kk/">
+  <link rel="alternate" hreflang="ru" href="https://bekdaulet.github.io/ru/">
+  <link rel="alternate" hreflang="x-default" href="https://bekdaulet.github.io/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230b1220'/%3E%3Ccircle cx='32' cy='32' r='6' fill='%23f5d76e'/%3E%3Ccircle cx='18' cy='22' r='2' fill='white'/%3E%3Ccircle cx='46' cy='18' r='1.5' fill='white'/%3E%3Ccircle cx='48' cy='44' r='2' fill='white'/%3E%3Ccircle cx='16' cy='46' r='1.5' fill='white'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Inter:wght@400;500;600&display=swap&subset=cyrillic" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <nav class="nav container">
+    <a class="brand" href="#top">Б. Шукиргалиев</a>
+    <ul class="nav-links">
+      <li><a href="#research">Исследования</a></li>
+      <li><a href="#publications">Публикации</a></li>
+      <li><a href="#experience">Опыт</a></li>
+      <li><a href="#teaching">Преподавание</a></li>
+      <li><a href="#contact">Контакты</a></li>
+    </ul>
+    <ul class="lang-switch" aria-label="Язык">
+      <li><a href="/" lang="en" hreflang="en">EN</a></li>
+      <li><a href="/kk/" lang="kk" hreflang="kk">ҚАЗ</a></li>
+      <li><span class="current" lang="ru">РУС</span></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="stars" aria-hidden="true"></div>
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <p class="eyebrow">Астрофизик · Астана, Казахстан</p>
+        <h1>Бекдаулет<br>Шукиргалиев</h1>
+        <p class="lead">
+          Я изучаю, как звёздные скопления рождаются, живут и распадаются, с помощью
+          массивно-параллельного <em>N</em>-body моделирования на GPU. Преподаю физику
+          и научные вычисления в <a href="https://nu.edu.kz">Назарбаев Университете</a>.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="../assets/Shukirgaliyev_CV.pdf">Скачать CV</a>
+          <a class="btn btn-ghost" href="#contact">Связаться</a>
+        </div>
+        <ul class="id-links">
+          <li><a href="https://orcid.org/0000-0002-4601-7065" title="ORCID">ORCID</a></li>
+          <li><a href="https://scholar.google.com/citations?user=lLHiWosAAAAJ&hl=en" title="Google Scholar">Scholar</a></li>
+          <li><a href="https://ui.adsabs.harvard.edu/search/q=orcid%3A0000-0002-4601-7065&sort=date%20desc" title="NASA ADS">ADS</a></li>
+          <li><a href="https://github.com/BS-astronomer" title="GitHub">GitHub</a></li>
+        </ul>
+      </div>
+      <figure class="hero-photo">
+        <img src="../assets/photo.jpg" alt="Портрет Бекдаулета Шукиргалиева" width="621" height="800">
+      </figure>
+    </div>
+  </section>
+
+  <section id="research" class="section">
+    <div class="container">
+      <h2>Исследования</h2>
+      <p class="section-intro">
+        Моя работа находится на стыке звёздной динамики и высокопроизводительных вычислений.
+        Я строю и запускаю прямые <em>N</em>-body модели на GPU-кластерах, чтобы проследить
+        эволюцию звёздных скоплений с момента выброса газа до их распада в приливном поле Галактики.
+      </p>
+      <div class="grid-3">
+        <article class="card">
+          <h3>Формирование и выживание звёздных скоплений</h3>
+          <p>Как центрально-пиковая эффективность звездообразования позволяет молодым скоплениям пережить выброс газа. Сочетание магнитогидродинамики и <em>N</em>-body моделей самых ранних фаз жизни скоплений.</p>
+        </article>
+        <article class="card">
+          <h3>Скопления в приливном поле Галактики</h3>
+          <p>Долговременная эволюция рассеянных скоплений, времена их распада, приливные хвосты, удержание чёрных дыр, образование и разрушение широких двойных.</p>
+        </article>
+        <article class="card">
+          <h3>Взаимодействие звёзд с диском в ядрах галактик</h3>
+          <p>Динамика ядерных звёздных скоплений вокруг сверхмассивных чёрных дыр и влияние аккреционных дисков на орбиты захваченных звёзд в активных ядрах галактик.</p>
+        </article>
+        <article class="card">
+          <h3>Машинное обучение в астрофизике</h3>
+          <p>Определение членов скоплений по данным Gaia методами обучения с учителем и классификация гравитационно-волновых сигналов от сверхновых.</p>
+        </article>
+        <article class="card">
+          <h3>GPU и HPC вычисления</h3>
+          <p>Массивно-параллельное моделирование с <code>nbody6++gpu</code>, <code>phi-GRAPE</code> и CUDA. Тестирование Numba, CuPy и мульти-GPU подходов для научных задач.</p>
+        </article>
+        <article class="card">
+          <h3>Финансируемые проекты</h3>
+          <p>Руководитель трёх научных грантов Министерства науки и высшего образования Казахстана по формированию и распаду звёздных скоплений и анализу с помощью ИИ.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="publications" class="section section-alt">
+    <div class="container">
+      <h2>Избранные публикации</h2>
+      <p class="section-intro">
+        Полный список:
+        <a href="https://scholar.google.com/citations?user=lLHiWosAAAAJ&hl=en">Google Scholar</a>,
+        <a href="https://ui.adsabs.harvard.edu/search/q=orcid%3A0000-0002-4601-7065&sort=date%20desc">NASA ADS</a> и
+        <a href="https://orcid.org/0000-0002-4601-7065">ORCID</a>.
+      </p>
+      <ol class="pubs">
+        <li>
+          <span class="pub-title"><a href="https://doi.org/10.3847/2041-8213/ae5819">Formation and Disruption of Wide Binaries in Star Clusters Revealed by N-body Simulations</a></span>
+          <span class="pub-meta">Bissekenov, Pang, Spurzem, <strong>Shukirgaliyev</strong>, Kalambay, Berczik · ApJ Letters 1001, L33 · 2026</span>
+        </li>
+        <li>
+          <span class="pub-title"><a href="https://doi.org/10.1051/0004-6361/202556268">Centrally concentrated star formation in young clusters</a></span>
+          <span class="pub-meta">Assilhan, Mac Low, Polak, Abdikamalov, et al., <strong>Shukirgaliyev</strong> (автор для переписки) · A&amp;A 705, A79 · 2025</span>
+        </li>
+        <li>
+          <span class="pub-title"><a href="https://doi.org/10.1051/0004-6361/202449791">Cluster membership analysis with supervised learning and N-body simulations</a></span>
+          <span class="pub-meta">Bissekenov, Kalambay, Abdikamalov, Pang, Berczik, <strong>Shukirgaliyev</strong> (автор для переписки) · A&amp;A 689, A282 · 2024</span>
+        </li>
+        <li>
+          <span class="pub-title"><a href="https://doi.org/10.1051/0004-6361/202141299">The bound mass of Dehnen models with centrally peaked star formation efficiency</a></span>
+          <span class="pub-meta"><strong>Shukirgaliyev</strong>, Otebay, Sobolenko, et al. · A&amp;A 654, A53 · 2021</span>
+        </li>
+        <li>
+          <span class="pub-title"><a href="https://doi.org/10.1093/mnras/stz876">The star cluster survivability after gas expulsion is independent of the impact of the Galactic tidal field</a></span>
+          <span class="pub-meta"><strong>Shukirgaliyev</strong>, Parmentier, Berczik, Just · MNRAS 486, 1045 · 2019</span>
+        </li>
+        <li>
+          <span class="pub-title"><a href="https://doi.org/10.3847/1538-4357/aad3bf">The long-term evolution of star clusters formed with a centrally-peaked star-formation-efficiency profile</a></span>
+          <span class="pub-meta"><strong>Shukirgaliyev</strong>, Parmentier, Just, Berczik · ApJ 863, 171 · 2018</span>
+        </li>
+        <li>
+          <span class="pub-title"><a href="https://doi.org/10.1093/mnras/sty459">Star-disc interaction in galactic nuclei: formation of a central stellar disc</a></span>
+          <span class="pub-meta">Panamarev, <strong>Shukirgaliyev</strong>, Meiron, et al. · MNRAS 476, 4224 · 2018</span>
+        </li>
+        <li>
+          <span class="pub-title"><a href="https://doi.org/10.1051/0004-6361/201730607">Impact of a star formation efficiency profile on the evolution of open clusters</a></span>
+          <span class="pub-meta"><strong>Shukirgaliyev</strong>, Parmentier, Berczik, Just · A&amp;A 605, A119 · 2017</span>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="experience" class="section">
+    <div class="container">
+      <h2>Опыт</h2>
+      <div class="two-col">
+        <div>
+          <h3 class="sub">Должности</h3>
+          <ul class="timeline">
+            <li><span class="when">2025 –</span><span class="what"><strong>Инструктор (Instructor)</strong>, кафедра физики, Назарбаев Университет, Астана</span></li>
+            <li><span class="when">2024 – 2025</span><span class="what"><strong>Ассоциированный профессор</strong>, затем <strong>декан</strong>, Актюбинский кампус Университета Хериот-Уатт</span></li>
+            <li><span class="when">2023 – 2024</span><span class="what"><strong>Ассоциированный профессор</strong>, Astana IT University</span></li>
+            <li><span class="when">2019 – 2024</span><span class="what"><strong>Постдокторант</strong>, лаборатория Energetic Cosmos, Назарбаев Университет</span></li>
+            <li><span class="when">2019 – 2024</span><span class="what"><strong>Старший научный сотрудник</strong>, Астрофизический институт им. В. Г. Фесенкова, Алматы</span></li>
+            <li><span class="when">2015 – 2019</span><span class="what"><strong>Научный сотрудник</strong>, затем <strong>постдокторант</strong>, Astronomisches Rechen-Institut, Гейдельбергский университет</span></li>
+            <li><span class="when">2013 – 2019</span><span class="what"><strong>Младший научный сотрудник</strong>, Астрофизический институт им. В. Г. Фесенкова, Алматы</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="sub">Образование</h3>
+          <ul class="timeline">
+            <li><span class="when">2018</span><span class="what"><strong>Dr. rer. nat. (PhD) по астрономии</strong>, <em>cum laude</em>, Гейдельбергский университет. Стипендиат IMPRS-HD. Диссертация: <em>The life of star clusters, from birth to dissolution: a new approach</em>. Научные руководители: G. Parmentier, A. Just</span></li>
+            <li><span class="when">2013</span><span class="what"><strong>Магистр астрономии</strong>, КазНУ им. аль-Фараби, Алматы</span></li>
+            <li><span class="when">2010</span><span class="what"><strong>Бакалавр астрономии</strong>, КазНУ им. аль-Фараби, Алматы</span></li>
+          </ul>
+          <h3 class="sub">Признание</h3>
+          <ul class="timeline">
+            <li><span class="when">2024</span><span class="what">Государственная премия <strong>«Лучший преподаватель вуза»</strong></span></li>
+            <li><span class="when">2021 –</span><span class="what">Член <a href="https://www.iau.org/">Международного астрономического союза</a></span></li>
+            <li><span class="when">2019 –</span><span class="what">Член <a href="https://eas.unige.ch">Европейского астрономического общества</a></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="teaching" class="section section-alt">
+    <div class="container">
+      <h2>Преподавание</h2>
+      <p class="section-intro">Курсы, которые я вёл и веду.</p>
+      <div class="grid-3">
+        <article class="card card-compact">
+          <h3>Назарбаев Университет</h3>
+          <p>Физика I и II, Оптика, Современная физика, Оптоэлектроника и Научные параллельные вычисления. Руководитель лабораторных курсов по физике.</p>
+        </article>
+        <article class="card card-compact">
+          <h3>Университет Хериот-Уатт, Актобе</h3>
+          <p>Физика для студентов первого курса: лекции, семинары и лабораторные занятия.</p>
+        </article>
+        <article class="card card-compact">
+          <h3>Astana IT University</h3>
+          <p>Алгоритмы машинного обучения (бакалавриат) и Высокопроизводительные вычисления (магистратура).</p>
+        </article>
+        <article class="card card-compact">
+          <h3>КазНУ им. аль-Фараби</h3>
+          <p>Звёздная динамика, Строение и эволюция звёзд, Фракталы во Вселенной, Динамика планетных систем.</p>
+        </article>
+        <article class="card card-compact">
+          <h3>Гейдельбергский университет</h3>
+          <p>Введение в вычислительную физику, семинарские занятия.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>Контакты</h2>
+      <div class="two-col">
+        <div>
+          <p>
+            <strong>Доктор Бекдаулет Шукиргалиев</strong><br>
+            Кафедра физики, Назарбаев Университет<br>
+            пр. Кабанбай батыра 53, кабинет 7e332<br>
+            010000 Астана, Казахстан
+          </p>
+          <p>
+            <a href="mailto:bekdaulet.shukirgaliyev@nu.edu.kz">bekdaulet.shukirgaliyev@nu.edu.kz</a><br>
+            <a href="mailto:bekdaulet.s@gmail.com">bekdaulet.s@gmail.com</a>
+          </p>
+        </div>
+        <div>
+          <h3 class="sub">Профили</h3>
+          <ul class="profile-list">
+            <li><a href="https://orcid.org/0000-0002-4601-7065">ORCID 0000-0002-4601-7065</a></li>
+            <li><a href="https://scholar.google.com/citations?user=lLHiWosAAAAJ&hl=en">Google Scholar</a></li>
+            <li><a href="https://ui.adsabs.harvard.edu/search/q=orcid%3A0000-0002-4601-7065&sort=date%20desc">NASA ADS</a></li>
+            <li><a href="https://www.scopus.com/authid/detail.uri?authorId=57163629900">Scopus</a></li>
+            <li><a href="https://www.webofscience.com/wos/author/record/1194333">Web of Science</a></li>
+            <li><a href="https://github.com/BS-astronomer">GitHub</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>© <span id="year">2026</span> Бекдаулет Шукиргалиев · <a href="../assets/Shukirgaliyev_CV.pdf">CV (PDF)</a></p>
+  </div>
+</footer>
+
+<script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
