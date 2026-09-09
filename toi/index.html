@@ -131,6 +131,34 @@ img{max-width:100%}
 .cta-tel{font-size:13.5px;color:rgba(250,247,241,.64);text-decoration:none;border-bottom:1px solid rgba(250,247,241,.2);padding-bottom:3px;transition:color .3s ease,border-color .3s ease}
 .cta-tel:hover,.cta-tel:focus-visible{color:var(--altyn-lit);border-color:var(--altyn-lit);outline:none}
 
+/* rsvp form */
+.form{display:grid;gap:17px;animation:rise .9s ease .3s both}
+.field{display:block}
+.field__label{display:block;margin-bottom:8px;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(250,247,241,.6)}
+.field__input,.field__area{width:100%;padding:15px 16px;border:1px solid rgba(250,247,241,.2);border-radius:2px;background:rgba(12,26,48,.55);color:var(--ivory);font-family:var(--sans);font-size:16px;transition:border-color .25s ease,background .25s ease}
+.field__area{min-height:92px;resize:vertical}
+.field__input::placeholder,.field__area::placeholder{color:rgba(250,247,241,.3)}
+.field__input:focus,.field__area:focus{outline:none;border-color:var(--altyn);background:rgba(184,147,74,.1)}
+.choice{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.choice__opt{position:relative;display:block;cursor:pointer}
+.choice__opt input{position:absolute;opacity:0;width:1px;height:1px}
+.choice__face{display:flex;align-items:center;justify-content:center;min-height:56px;padding:10px 12px;border:1px solid rgba(250,247,241,.2);border-radius:2px;font-size:14px;font-weight:600;text-align:center;line-height:1.3;color:rgba(250,247,241,.76);transition:border-color .25s ease,background .25s ease,color .25s ease}
+.choice__opt input:checked+.choice__face{border-color:var(--altyn);background:var(--altyn);color:#12233f}
+.choice__opt input:focus-visible+.choice__face{outline:2px solid var(--altyn-lit);outline-offset:2px}
+.cta-send{position:relative;overflow:hidden;margin-top:4px;width:100%;padding:19px 24px;border:1px solid var(--altyn);border-radius:2px;background:var(--altyn);color:#12233f;font-family:var(--sans);font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;transition:background .3s ease,color .3s ease}
+.cta-send::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);transform:skewX(-18deg);transition:left .6s ease}
+.cta-send:hover:not(:disabled)::after,.cta-send:focus-visible:not(:disabled)::after{left:115%}
+.cta-send:hover:not(:disabled),.cta-send:focus-visible:not(:disabled){background:transparent;color:var(--altyn-lit);outline:none}
+.cta-send:disabled{opacity:.6;cursor:default}
+.form__error{margin:0;font-size:13.5px;line-height:1.5;color:#f0a58e}
+.alt{margin:26px 0 0;text-align:center;font-size:13px;line-height:1.9;color:rgba(250,247,241,.5)}
+.alt a{color:rgba(250,247,241,.75);text-decoration:none;border-bottom:1px solid rgba(250,247,241,.22);padding-bottom:2px}
+.alt a:hover,.alt a:focus-visible{color:var(--altyn-lit);border-color:var(--altyn-lit);outline:none}
+.thanks{padding:clamp(32px,6vw,50px) 24px;border:1px solid rgba(184,147,74,.45);border-radius:2px;text-align:center;animation:rise .7s ease both}
+.thanks__mark{color:var(--altyn);margin-bottom:18px}
+.thanks__title{margin:0 0 10px;font-family:var(--display);font-size:clamp(24px,5.6vw,32px);font-weight:500}
+.thanks__text{margin:0;font-size:14.5px;line-height:1.65;color:rgba(250,247,241,.7)}
+
 /* ---------- 6. footer ---------- */
 .foot{background:var(--ink-deep);color:rgba(250,247,241,.7);padding:clamp(46px,8vw,72px) 24px clamp(30px,5vw,44px);text-align:center}
 .foot__key{margin:0 0 16px;font-size:10px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:rgba(250,247,241,.42)}
@@ -268,16 +296,67 @@ img{max-width:100%}
       <h2 class="rsvp__title">Келетініңізді белгілеп қойыңыз</h2>
       <p class="rsvp__hint">Дастархан мен орынды дұрыс дайындауымыз үшін жауабыңыз бізге өте қажет. Бір минут уақытыңызды аласыз.</p>
 
-      <!-- ФОРМА: Google Form қосылғанда осы блок сол формамен ауыстырылады -->
-      <div class="reply">
-        <a class="cta-wa" href="https://wa.me/77075130455?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5!%20%D0%A2%D0%B5%D0%BC%D1%96%D1%80%D0%B1%D0%BE%D0%BB%D0%B0%D1%82%20%D0%B0%D2%93%D0%B0%D0%BC%D1%8B%D0%B7%D0%B4%D1%8B%D2%A3%2080%20%D0%B6%D0%B0%D1%81%20%D0%BC%D0%B5%D1%80%D0%B5%D0%B9%D1%82%D0%BE%D0%B9%D1%8B%D0%BD%D0%B0%20%D0%9A%D0%95%D0%9B%D0%95%D0%9C%D0%86%D0%9D.%0A%D0%90%D1%82%D1%8B-%D0%B6%D3%A9%D0%BD%D1%96%D0%BC%3A%20%0A%D0%91%D0%B0%D1%80%D0%BB%D1%8B%D2%93%D1%8B%20%D0%B0%D0%B4%D0%B0%D0%BC%20%D1%81%D0%B0%D0%BD%D1%8B%3A%20" target="_blank" rel="noopener noreferrer">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.24 8.24 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.03 0 1.2.87 2.36.99 2.52.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.29z"/>
+      <iframe name="gf-sink" id="gf-sink" title="" aria-hidden="true" tabindex="-1" style="position:absolute;width:0;height:0;border:0;opacity:0"></iframe>
+
+      <form class="form" id="rsvp-form" method="POST" target="gf-sink"
+            action="https://docs.google.com/forms/d/e/1FAIpQLSf4I05AhcIFwlLuFdoBkyFO0dZ9phAisCJJ5lK_EEwxEsJx2Q/formResponse">
+        <label class="field">
+          <span class="field__label">Аты-жөніңіз</span>
+          <input class="field__input" type="text" name="entry.1597449852" id="f-name"
+                 autocomplete="name" placeholder="Мысалы: Асқар Сейітов">
+        </label>
+
+        <label class="field">
+          <span class="field__label">Телефон нөміріңіз</span>
+          <input class="field__input" type="tel" name="entry.2092546464" id="f-phone"
+                 inputmode="tel" autocomplete="tel" placeholder="+7 7__ ___ __ __">
+        </label>
+
+        <div class="field">
+          <span class="field__label">Тойға қатысасыз ба?</span>
+          <div class="choice">
+            <label class="choice__opt">
+              <input type="radio" name="entry.1441812351" value="Иә, келемін" id="f-yes" checked>
+              <span class="choice__face">Иә, келемін</span>
+            </label>
+            <label class="choice__opt">
+              <input type="radio" name="entry.1441812351" value="Келе алмаймын" id="f-no">
+              <span class="choice__face">Келе алмаймын</span>
+            </label>
+          </div>
+        </div>
+
+        <label class="field" id="f-guests-field">
+          <span class="field__label">Барлығы қанша адам боласыздар?</span>
+          <input class="field__input" type="number" name="entry.183128621" id="f-guests"
+                 min="1" max="30" step="1" inputmode="numeric" value="1">
+        </label>
+
+        <label class="field">
+          <span class="field__label">Тілегіңіз немесе ескертпеңіз</span>
+          <textarea class="field__area" name="entry.1508227619" id="f-note"
+                    placeholder="Қаласаңыз бірер жылы сөз жазып қалдырыңыз"></textarea>
+        </label>
+
+        <p class="form__error" id="f-error" hidden></p>
+
+        <button class="cta-send" type="submit" id="f-send">Жауабымды жіберу</button>
+      </form>
+
+      <div id="thanks" hidden>
+        <div class="thanks">
+          <svg class="thanks__mark" width="46" height="46" viewBox="0 0 46 46" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true">
+            <circle cx="23" cy="23" r="19"/><path d="M15 23.5l5.5 5.5L31 18"/>
           </svg>
-          WhatsApp арқылы жауап беру
-        </a>
-        <a class="cta-tel" href="tel:+77075130455">Немесе қоңырау шалыңыз: +7 707 513 04 55</a>
+          <p class="thanks__title">Рахмет, жауабыңыз қабылданды</p>
+          <p class="thanks__text" id="thanks-text">Сізді тойда қуана күтеміз. Кездескенше сау болыңыз.</p>
+        </div>
       </div>
+
+      <p class="alt">
+        Форма жұмыс істемесе, <a href="https://wa.me/77075130455?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5!%20%D0%A2%D0%B5%D0%BC%D1%96%D1%80%D0%B1%D0%BE%D0%BB%D0%B0%D1%82%20%D0%B0%D2%93%D0%B0%D0%BC%D1%8B%D0%B7%D0%B4%D1%8B%D2%A3%2080%20%D0%B6%D0%B0%D1%81%20%D0%BC%D0%B5%D1%80%D0%B5%D0%B9%D1%82%D0%BE%D0%B9%D1%8B%D0%BD%D0%B0%20%D0%9A%D0%95%D0%9B%D0%95%D0%9C%D0%86%D0%9D.%0A%D0%90%D1%82%D1%8B-%D0%B6%D3%A9%D0%BD%D1%96%D0%BC%3A%20%0A%D0%91%D0%B0%D1%80%D0%BB%D1%8B%D2%93%D1%8B%20%D0%B0%D0%B4%D0%B0%D0%BC%20%D1%81%D0%B0%D0%BD%D1%8B%3A%20" target="_blank" rel="noopener noreferrer">WhatsApp арқылы</a> жазыңыз<br>
+        немесе қоңырау шалыңыз: <a href="tel:+77075130455">+7 707 513 04 55</a>
+      </p>
     </div>
   </section>
 
@@ -337,6 +416,83 @@ img{max-width:100%}
   }
   window.addEventListener('pointerdown', firstTouch, { passive: true });
   window.addEventListener('keydown', firstTouch);
+
+  // ---- RSVP: Google Form-ға жасырын iframe арқылы жіберу ----
+  var form = document.getElementById('rsvp-form');
+  var sink = document.getElementById('gf-sink');
+  var send = document.getElementById('f-send');
+  var errBox = document.getElementById('f-error');
+  var fName = document.getElementById('f-name');
+  var fPhone = document.getElementById('f-phone');
+  var fGuests = document.getElementById('f-guests');
+  var guestsField = document.getElementById('f-guests-field');
+  var yes = document.getElementById('f-yes');
+  var no = document.getElementById('f-no');
+  var thanks = document.getElementById('thanks');
+  var thanksText = document.getElementById('thanks-text');
+  var alt = document.querySelector('.alt');
+  var sent = false, done = false;
+
+  form.noValidate = true;
+
+  function showError(msg) {
+    errBox.textContent = msg;
+    errBox.hidden = false;
+  }
+
+  function syncGuests() {
+    var coming = yes.checked;
+    guestsField.hidden = !coming;
+    if (coming) {
+      fGuests.min = '1';
+      if (!fGuests.value || Number(fGuests.value) < 1) { fGuests.value = '1'; }
+    } else {
+      fGuests.min = '0';
+      fGuests.value = '0';
+    }
+  }
+  yes.addEventListener('change', syncGuests);
+  no.addEventListener('change', syncGuests);
+  syncGuests();
+
+  function finish() {
+    if (done) { return; }
+    done = true;
+    thanksText.textContent = yes.checked
+      ? 'Сізді тойда қуана күтеміз. Кездескенше сау болыңыз.'
+      : 'Хабарлағаныңызға рахмет. Алыстан болса да ақ тілегіңізді қабыл алдық.';
+    form.hidden = true;
+    if (alt) { alt.hidden = true; }
+    thanks.hidden = false;
+  }
+
+  sink.addEventListener('load', function () {
+    if (sent) { finish(); }
+  });
+
+  form.addEventListener('submit', function (event) {
+    errBox.hidden = true;
+
+    if (fName.value.trim().length < 2) {
+      event.preventDefault();
+      showError('Аты-жөніңізді толық жазыңыз.');
+      fName.focus();
+      return;
+    }
+    if (fPhone.value.replace(/\D/g, '').length < 6) {
+      event.preventDefault();
+      showError('Телефон нөміріңізді дұрыс жазыңыз.');
+      fPhone.focus();
+      return;
+    }
+    syncGuests();
+
+    sent = true;
+    send.disabled = true;
+    send.textContent = 'Жіберілуде';
+    // iframe load оқиғасы келмей қалса да, жауап Google-ге кетті.
+    setTimeout(finish, 6000);
+  });
 })();
 </script>
 
