@@ -45,9 +45,19 @@ img{max-width:100%}
 @keyframes cue{0%,100%{transform:scaleY(.25);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}}
 @keyframes bar{0%,100%{height:5px}50%{height:15px}}
 @keyframes halo{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.9);opacity:0}}
+@keyframes aura{0%,100%{opacity:.5;transform:translateY(0) scale(1)}50%{opacity:.9;transform:translateY(-14px) scale(1.06)}}
+@keyframes dust{
+  0%{transform:translate3d(0,0,0) scale(.5);opacity:0}
+  12%{opacity:1}
+  85%{opacity:.7}
+  100%{transform:translate3d(var(--dx,14px),calc(-1 * var(--rise,120%)),0) scale(1.15);opacity:0}}
+@keyframes drift{from{background-position-x:0}to{background-position-x:72px}}
+@keyframes shine{0%,100%{background-position:130% 50%}50%{background-position:-30% 50%}}
+@keyframes turn{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes tick{0%{transform:scale(1.14);opacity:.65}100%{transform:scale(1);opacity:1}}
 
 /* ---------- ornament band between sections ---------- */
-.band{height:20px;background-image:var(--band);background-repeat:repeat-x;background-position:center;opacity:.5}
+.band{height:20px;background-image:var(--band);background-repeat:repeat-x;background-position:center;opacity:.5;animation:drift 26s linear infinite}
 .band--dark{opacity:.42;filter:brightness(1.5)}
 
 /* ---------- eyebrow with flanking rules ---------- */
@@ -66,6 +76,14 @@ img{max-width:100%}
     radial-gradient(1.3px 1.3px at 88% 55%,rgba(217,190,134,.45),transparent),
     radial-gradient(1.2px 1.2px at 9% 70%,rgba(226,237,242,.4),transparent),
     radial-gradient(1.5px 1.5px at 46% 84%,rgba(217,190,134,.35),transparent)}
+.hero__aura{position:absolute;left:50%;top:-22%;width:min(1100px,150vw);height:78%;transform:translateX(-50%);z-index:0;pointer-events:none;
+  background:radial-gradient(50% 55% at 50% 40%,rgba(184,147,74,.26),rgba(184,147,74,.06) 55%,transparent 72%);
+  animation:aura 13s ease-in-out infinite}
+/* алтын шаң — фондық анимация */
+.dust{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+.dust b{position:absolute;bottom:-14px;display:block;border-radius:50%;
+  background:radial-gradient(circle,rgba(232,209,160,.95) 0%,rgba(217,190,134,.45) 45%,rgba(217,190,134,0) 72%);
+  animation:dust linear infinite}
 .hero__inner{position:relative;z-index:1;max-width:640px;margin:0 auto}
 .hero__eyebrow{color:var(--altyn-lit);margin-bottom:clamp(26px,5vw,42px);animation:rise .8s ease both}
 .portrait{position:relative;margin:0 auto;width:min(340px,74vw);aspect-ratio:1100/1971}
@@ -74,6 +92,14 @@ img{max-width:100%}
 .portrait__frame path{stroke-dasharray:2400;stroke-dashoffset:2400;animation:draw 2.8s cubic-bezier(.4,0,.2,1) .25s both}
 .hero__name{margin:clamp(26px,5vw,38px) 0 0;font-family:var(--display);font-weight:500;font-size:clamp(42px,11.5vw,78px);line-height:1;letter-spacing:.005em;animation:rise 1s ease .5s both}
 .hero__age{display:block;margin:6px 0 2px;font-family:var(--display);font-size:clamp(62px,19vw,124px);font-weight:600;line-height:.88;color:var(--altyn);animation:rise 1s ease .62s both}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .hero__age{
+    background:linear-gradient(100deg,#9a7833 0%,#c9a24a 30%,#f6e6bf 50%,#c9a24a 70%,#9a7833 100%);
+    background-size:260% 100%;background-position:130% 50%;
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    animation:rise 1s ease .62s both, shine 7s ease-in-out 1.6s infinite}
+}
 .hero__lead{margin:0 auto;max-width:400px;font-size:clamp(15px,4vw,18px);line-height:1.6;color:rgba(250,247,241,.8);animation:rise 1s ease .72s both}
 .hero__when{margin:clamp(26px,5vw,36px) 0 0;display:inline-block;padding:11px 24px;border:1px solid rgba(184,147,74,.5);font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--altyn-lit);animation:rise 1s ease .84s both}
 .hero__cue{margin:clamp(30px,6vw,46px) auto 0;width:1px;height:44px;background:linear-gradient(rgba(217,190,134,.7),transparent);animation:cue 2.6s ease-in-out infinite;animation-delay:1.4s}
@@ -85,11 +111,13 @@ img{max-width:100%}
 .count__cell{padding:0 clamp(2px,1.5vw,10px)}
 .count__cell+.count__cell{border-left:1px solid rgba(184,147,74,.28)}
 .count__num{display:block;font-family:var(--display);font-size:clamp(30px,9vw,54px);font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.count__num.is-tick{animation:tick .5s cubic-bezier(.2,.8,.3,1)}
 .count__unit{display:block;margin-top:9px;font-size:clamp(9px,2.6vw,11px);font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 
 /* ---------- 3. invitation card ---------- */
-.words{background:var(--ivory);padding:clamp(56px,9vw,104px) 22px}
-.card{position:relative;max-width:660px;margin:0 auto;background:var(--paper);border:1px solid var(--line);padding:clamp(38px,7vw,76px) clamp(24px,6vw,64px);text-align:center;animation:rise 1s ease both}
+.words{position:relative;overflow:hidden;background:var(--ivory);padding:clamp(56px,9vw,104px) 22px}
+.words__halo{position:absolute;left:50%;top:50%;width:min(820px,155vw);height:min(820px,155vw);transform:translate(-50%,-50%);color:var(--altyn);opacity:.07;pointer-events:none;animation:turn 120s linear infinite}
+.card{position:relative;z-index:1;max-width:660px;margin:0 auto;background:var(--paper);border:1px solid var(--line);padding:clamp(38px,7vw,76px) clamp(24px,6vw,64px);text-align:center;animation:rise 1s ease both}
 .card::before{content:"";position:absolute;inset:9px;border:1px solid rgba(184,147,74,.3);pointer-events:none}
 .card__corner{position:absolute;width:26px;height:26px;color:var(--altyn);opacity:.75}
 .card__corner--tl{top:16px;left:16px}
@@ -118,8 +146,8 @@ img{max-width:100%}
 .cta-map:hover svg,.cta-map:focus-visible svg{transform:translateY(-3px)}
 
 /* ---------- 5. rsvp ---------- */
-.rsvp{position:relative;background:var(--night);color:var(--ivory);padding:clamp(56px,9vw,100px) 22px}
-.rsvp__inner{max-width:600px;margin:0 auto}
+.rsvp{position:relative;overflow:hidden;background:var(--night);color:var(--ivory);padding:clamp(56px,9vw,100px) 22px}
+.rsvp__inner{position:relative;z-index:1;max-width:600px;margin:0 auto}
 .rsvp__eyebrow{color:var(--altyn-lit);animation:rise .8s ease both}
 .rsvp__title{margin:18px 0 12px;font-family:var(--display);font-size:clamp(27px,6.6vw,40px);font-weight:500;line-height:1.18;text-align:center;animation:rise .9s ease .1s both}
 .rsvp__hint{margin:0 auto clamp(28px,5vw,38px);max-width:430px;font-size:14px;line-height:1.65;color:rgba(250,247,241,.7);text-align:center;animation:rise .9s ease .2s both}
@@ -185,6 +213,8 @@ img{max-width:100%}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
   .portrait__frame path{stroke-dashoffset:0!important}
+  .dust,.hero__aura,.words__halo{display:none!important}
+  .hero__age{background:none!important;-webkit-text-fill-color:var(--altyn)!important;color:var(--altyn)!important}
 }
 </style>
 </head>
@@ -203,6 +233,8 @@ img{max-width:100%}
 <main>
   <section class="hero">
     <div class="hero__stars" aria-hidden="true"></div>
+    <div class="hero__aura" aria-hidden="true"></div>
+    <div class="dust" id="dust-hero" aria-hidden="true"></div>
     <div class="hero__inner">
       <p class="eyebrow hero__eyebrow">Құрметті қонақ</p>
 
@@ -240,6 +272,15 @@ img{max-width:100%}
   <div class="band" aria-hidden="true"></div>
 
   <section class="words">
+    <svg class="words__halo" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="0.7" aria-hidden="true">
+      <circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="78"/><circle cx="100" cy="100" r="44"/>
+      <g>
+        <path d="M100 22v22M100 156v22M22 100h22M156 100h22"/>
+        <path d="M45 45l16 16M139 139l16 16M155 45l-16 16M61 139l-16 16"/>
+      </g>
+      <path d="M56 100q44-46 88 0-44 46-88 0z"/>
+      <path d="M100 56q46 44 0 88-46-44 0-88z"/>
+    </svg>
     <div class="card">
       <svg class="card__corner card__corner--tl" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M25 1H8Q1 1 1 8v17"/><path d="M6 6q6-4 10 0-6 4-10 0z"/></svg>
       <svg class="card__corner card__corner--tr" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M25 1H8Q1 1 1 8v17"/><path d="M6 6q6-4 10 0-6 4-10 0z"/></svg>
@@ -291,6 +332,7 @@ img{max-width:100%}
   <div class="band band--dark" aria-hidden="true"></div>
 
   <section class="rsvp" id="rsvp">
+    <div class="dust" id="dust-rsvp" aria-hidden="true"></div>
     <div class="rsvp__inner">
       <p class="eyebrow rsvp__eyebrow">Жауабыңыз</p>
       <h2 class="rsvp__title">Келетініңізді белгілеп қойыңыз</h2>
@@ -370,20 +412,69 @@ img{max-width:100%}
 
 <script>
 (function () {
+  var reduce = window.matchMedia
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   // ---- кері санақ: 3 қаңтар 2027, сағат 13:00 Астана уақыты (UTC+5) ----
   var target = Date.UTC(2027, 0, 3, 8, 0, 0);
   var d = document.getElementById('cd-d'), h = document.getElementById('cd-h'),
       m = document.getElementById('cd-m'), s = document.getElementById('cd-s');
   function pad(n) { return n < 10 ? '0' + n : String(n); }
+  function put(node, value) {
+    if (node.textContent === value) { return; }
+    node.textContent = value;
+    if (reduce) { return; }
+    node.classList.remove('is-tick');
+    void node.offsetWidth;
+    node.classList.add('is-tick');
+  }
   function tick() {
     var left = Math.max(0, Math.floor((target - Date.now()) / 1000));
-    d.textContent = String(Math.floor(left / 86400));
-    h.textContent = pad(Math.floor((left % 86400) / 3600));
-    m.textContent = pad(Math.floor((left % 3600) / 60));
-    s.textContent = pad(left % 60);
+    put(d, String(Math.floor(left / 86400)));
+    put(h, pad(Math.floor((left % 86400) / 3600)));
+    put(m, pad(Math.floor((left % 3600) / 60)));
+    put(s, pad(left % 60));
   }
   tick();
   setInterval(tick, 1000);
+
+  // ---- фондық анимация: алтын шаң ----
+  function seedDust(id, count, minRise, maxRise) {
+    var host = document.getElementById(id);
+    if (!host || reduce) { return; }
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < count; i++) {
+      var b = document.createElement('b');
+      var size = 2 + Math.random() * 5;
+      b.style.left = (Math.random() * 100).toFixed(2) + '%';
+      b.style.width = size.toFixed(1) + 'px';
+      b.style.height = size.toFixed(1) + 'px';
+      b.style.setProperty('--dx', (Math.random() * 90 - 45).toFixed(0) + 'px');
+      b.style.setProperty('--rise', (minRise + Math.random() * (maxRise - minRise)).toFixed(0) + 'vh');
+      b.style.animationDuration = (11 + Math.random() * 16).toFixed(1) + 's';
+      b.style.animationDelay = (-Math.random() * 24).toFixed(1) + 's';
+      frag.appendChild(b);
+    }
+    host.appendChild(frag);
+  }
+  var narrow = window.innerWidth < 640;
+  seedDust('dust-hero', narrow ? 16 : 30, 75, 130);
+  seedDust('dust-rsvp', narrow ? 8 : 14, 35, 70);
+
+  // ---- портреттің жеңіл параллаксы ----
+  var portrait = document.querySelector('.portrait');
+  if (portrait && !reduce && 'requestAnimationFrame' in window) {
+    var queued = false;
+    window.addEventListener('scroll', function () {
+      if (queued) { return; }
+      queued = true;
+      requestAnimationFrame(function () {
+        var offset = Math.min((window.pageYOffset || 0) * 0.11, 38);
+        portrait.style.transform = 'translate3d(0,' + offset.toFixed(1) + 'px,0)';
+        queued = false;
+      });
+    }, { passive: true });
+  }
 
   // ---- күй ----
   var audio = document.getElementById('kui');
