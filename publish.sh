@@ -45,6 +45,14 @@ done
 
 git add -A
 git commit -q -m "$msg"
+
+# Bring in anything published from elsewhere (another computer, the GitHub
+# website) before pushing, so the push is never rejected.
+if ! git pull -q --rebase origin main; then
+  echo "Could not combine your change with what is already on GitHub."
+  echo "Run 'git status' to see the conflicting files, or ask Claude to resolve it."
+  exit 1
+fi
 git push -q
 sha="$(git rev-parse --short HEAD)"
 echo "Pushed commit $sha. Waiting for GitHub Pages to rebuild..."
