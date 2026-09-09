@@ -198,11 +198,12 @@ img{max-width:100%}
 .foot__credit a{color:inherit}
 
 /* ---------- music ---------- */
-.music-dock{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;align-items:center;gap:9px}
+/* контейнердің өзі басуларды ұстамайды — тек батырма мен шақыру жазуы ұстайды */
+.music-dock{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;align-items:center;gap:9px;pointer-events:none}
 .music-hint{border:1px solid rgba(184,147,74,.55);border-radius:999px;background:rgba(16,31,56,.92);color:var(--altyn-lit);font-family:var(--sans);font-size:12px;font-weight:600;letter-spacing:.08em;padding:10px 16px;white-space:nowrap;cursor:pointer;backdrop-filter:blur(6px);opacity:0;transform:translateX(10px);pointer-events:none;transition:opacity .45s ease,transform .45s ease}
 .music-dock.show-hint .music-hint{opacity:1;transform:none;pointer-events:auto}
 .music-hint:hover,.music-hint:focus-visible{border-color:var(--altyn-lit);outline:none}
-.music{position:relative;flex:none;width:54px;height:54px;border:1px solid rgba(184,147,74,.65);border-radius:50%;background:rgba(16,31,56,.9);color:var(--altyn-lit);display:flex;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:0;backdrop-filter:blur(6px);transition:border-color .3s ease,background .3s ease}
+.music{position:relative;flex:none;pointer-events:auto;width:54px;height:54px;border:1px solid rgba(184,147,74,.65);border-radius:50%;background:rgba(16,31,56,.9);color:var(--altyn-lit);display:flex;align-items:center;justify-content:center;gap:3px;cursor:pointer;padding:0;backdrop-filter:blur(6px);transition:border-color .3s ease,background .3s ease}
 .music:hover,.music:focus-visible{border-color:var(--altyn-lit);background:var(--night);outline:none}
 .music__halo{position:absolute;inset:-1px;border-radius:50%;border:1px solid rgba(217,190,134,.6);animation:halo 2.4s ease-out infinite;pointer-events:none}
 .music.is-on .music__halo{display:none}
