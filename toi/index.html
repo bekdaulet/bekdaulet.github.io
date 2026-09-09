@@ -24,9 +24,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
 <style>
 :root{
-  --cream:#fdf9f2; --sand:#f7eddc; --sand-deep:#f2e4cd; --caramel:#ecd9b6;
+  --cream:#fffdf9; --sand:#f8f0e2; --sand-deep:#f3e8d5; --caramel:#ecd9b6;
   --ink:#3a3128; --ink-soft:#6b5d4c; --muted:#8c7e6c;
-  --gold:#b8862f; --gold-lit:#ddb45e; --gold-pale:#f1dfb2;
+  --gold:#a8791f; --gold-lit:#d3aa55; --gold-pale:#eeddb4;
+  --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='108' height='108' viewBox='0 0 108 108' fill='none' stroke='%23c9a24a' stroke-opacity='.26' stroke-width='1'%3E%3Cpath d='M54 22q13 14 0 28-13-14 0-28z'/%3E%3Cpath d='M40 36q14 13 28 0-14-13-28 0z' stroke-opacity='.16'/%3E%3Ccircle cx='54' cy='36' r='3.5'/%3E%3Cpath d='M0 90q13 13 26 0-13-13-26 0zM82 90q13 13 26 0-13-13-26 0z' stroke-opacity='.18'/%3E%3C/svg%3E");
   --kok:#2e8f9e; --kok-deep:#22707c; --kok-pale:#dceef0;
   --line:#e9dcc4; --white:#fff;
   --display:"Playfair Display","Times New Roman",Georgia,serif;
@@ -45,8 +46,7 @@ img{max-width:100%}
   14%{opacity:1}
   86%{opacity:.75}
   100%{transform:translate3d(var(--dx,16px),calc(-1 * var(--rise,110vh)),0) scale(1.2);opacity:0}}
-@keyframes sway{0%,100%{transform:translate(-50%,-50%) rotate(0)}100%{transform:translate(-50%,-50%) rotate(360deg)}}
-@keyframes glow{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(1)}50%{opacity:.95;transform:translate(-50%,-50%) scale(1.07)}}
+@keyframes weave{from{background-position:0 0}to{background-position:108px 108px}}
 @keyframes drift{from{background-position-x:0}to{background-position-x:84px}}
 @keyframes shine{0%,100%{background-position:130% 50%}50%{background-position:-30% 50%}}
 @keyframes tick{0%{transform:scale(1.13);opacity:.6}100%{transform:scale(1);opacity:1}}
@@ -61,16 +61,10 @@ img{max-width:100%}
 .eyebrow::before,.eyebrow::after{content:"";width:clamp(18px,6vw,48px);height:1px;background:currentColor;opacity:.45}
 
 /* ---------- 1. hero ---------- */
+/* Ақ фон + әрең байқалатын алтын қазақы өрнек. Суреттің айналасында ешқандай
+   қоршау, ореол немесе шашақ жоқ — сурет тікелей фонға сіңеді. */
 .hero{position:relative;overflow:hidden;text-align:center;padding:clamp(34px,6vw,58px) 20px clamp(46px,7vw,74px);
-  background:
-    radial-gradient(88% 62% at 50% 24%,#f7e8d0 0%,#fbf3e5 46%,var(--cream) 100%),
-    var(--cream)}
-.hero__rays{position:absolute;left:50%;top:clamp(210px,44vw,330px);width:min(880px,165vw);height:min(880px,165vw);
-  transform:translate(-50%,-50%);color:var(--gold);opacity:.13;pointer-events:none;animation:sway 200s linear infinite}
-.hero__glow{position:absolute;left:50%;top:clamp(210px,44vw,330px);width:min(660px,125vw);height:min(660px,125vw);
-  transform:translate(-50%,-50%);pointer-events:none;
-  background:radial-gradient(circle,rgba(233,198,132,.5) 0%,rgba(240,215,166,.22) 42%,transparent 70%);
-  animation:glow 11s ease-in-out infinite}
+  background:var(--cream) var(--pattern) repeat;animation:weave 90s linear infinite}
 .sparks{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 .sparks b{position:absolute;bottom:-16px;display:block;border-radius:50%;
   background:radial-gradient(circle,rgba(202,150,58,.75) 0%,rgba(221,180,94,.35) 45%,rgba(221,180,94,0) 72%);
@@ -79,16 +73,15 @@ img{max-width:100%}
 .hero__eyebrow{color:var(--gold);margin-bottom:clamp(18px,3.4vw,28px);animation:rise .8s ease both}
 
 /* портрет: жақтау жоқ, шеті фонға еріп кетеді */
-/* Маска эллипсінің радиусы қораптың шетіне дәл жетеді (50% ені, 42% биіктігі,
-   ортасы 42%-те), сондықтан суреттің төрт шеті де мүлдем мөлдір болып,
-   тіктөртбұрыш көрінбейді. */
-.portrait{position:relative;margin:0 auto;width:min(470px,94vw);aspect-ratio:4/5}
-.portrait__img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 22%;
-  -webkit-mask-image:radial-gradient(ellipse 50% 42% at 50% 42%,#000 34%,rgba(0,0,0,.94) 54%,rgba(0,0,0,.42) 78%,transparent 100%);
-  mask-image:radial-gradient(ellipse 50% 42% at 50% 42%,#000 34%,rgba(0,0,0,.94) 54%,rgba(0,0,0,.42) 78%,transparent 100%);
+/* Маска эллипсі қораптың шетінен әлдеқайда бұрын нөлге жетеді, сондықтан
+   суреттің тіктөртбұрышы да, айналасында сақина да көрінбейді. */
+.portrait{position:relative;margin:0 auto;width:min(420px,88vw);aspect-ratio:1/1}
+.portrait__img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 20%;
+  -webkit-mask-image:radial-gradient(ellipse 44% 44% at 50% 44%,#000 28%,rgba(0,0,0,.9) 50%,rgba(0,0,0,.32) 76%,transparent 100%);
+  mask-image:radial-gradient(ellipse 44% 44% at 50% 44%,#000 28%,rgba(0,0,0,.9) 50%,rgba(0,0,0,.32) 76%,transparent 100%);
   animation:bloom 2.2s cubic-bezier(.16,.84,.32,1) both}
 
-.hero__name{margin:clamp(4px,1vw,10px) 0 0;font-family:var(--display);font-weight:500;font-size:clamp(42px,11.5vw,76px);line-height:1.04;color:var(--ink);animation:rise 1s ease .35s both}
+.hero__name{margin:clamp(-34px,-4.5vw,-14px) 0 0;font-family:var(--display);font-weight:500;font-size:clamp(42px,11.5vw,76px);line-height:1.04;color:var(--ink);animation:rise 1s ease .35s both}
 .hero__age{display:block;margin:clamp(6px,1.6vw,12px) 0 clamp(12px,2.6vw,18px);font-family:var(--display);font-size:clamp(66px,20vw,132px);font-weight:600;line-height:1;color:var(--gold);animation:rise 1s ease .48s both}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
   .hero__age{background:linear-gradient(100deg,#a3711f 0%,#c8942f 28%,#f0d79a 50%,#c8942f 72%,#a3711f 100%);
@@ -110,8 +103,7 @@ img{max-width:100%}
 .count__unit{display:block;margin-top:9px;font-size:clamp(9px,2.6vw,11px);font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
 
 /* ---------- 3. invitation words ---------- */
-.words{position:relative;overflow:hidden;background:var(--cream);padding:clamp(54px,8.5vw,100px) 20px}
-.words__halo{position:absolute;left:50%;top:50%;width:min(760px,150vw);height:min(760px,150vw);transform:translate(-50%,-50%);color:var(--gold);opacity:.06;pointer-events:none;animation:sway 150s linear infinite}
+.words{position:relative;overflow:hidden;background:var(--cream) var(--pattern) repeat;padding:clamp(54px,8.5vw,100px) 20px}
 .card{position:relative;z-index:1;max-width:660px;margin:0 auto;background:var(--white);border-radius:6px;box-shadow:0 14px 44px rgba(150,110,50,.1);padding:clamp(36px,6.5vw,72px) clamp(24px,6vw,64px);text-align:center;animation:rise 1s ease both}
 .card__corner{position:absolute;width:24px;height:24px;color:var(--gold);opacity:.5}
 .card__corner--tl{top:14px;left:14px}
@@ -124,7 +116,7 @@ img{max-width:100%}
 .card__sign{margin:clamp(26px,4.4vw,40px) 0 0;font-size:11px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--muted)}
 
 /* ---------- 4. facts ---------- */
-.facts{background:var(--cream);padding:0 20px clamp(52px,8.5vw,96px)}
+.facts{background:var(--cream) var(--pattern) repeat;padding:clamp(10px,2vw,20px) 20px clamp(52px,8.5vw,96px)}
 .facts__grid{display:grid;gap:14px;grid-template-columns:1fr;max-width:960px;margin:0 auto}
 @media(min-width:780px){.facts__grid{grid-template-columns:repeat(3,1fr)}}
 .fact{background:var(--white);border-radius:6px;box-shadow:0 8px 26px rgba(150,110,50,.08);padding:clamp(26px,4vw,36px);text-align:center;animation:rise .9s ease both}
@@ -203,7 +195,7 @@ img{max-width:100%}
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation:none!important;transition:none!important}
-  .sparks,.hero__rays,.hero__glow,.words__halo{display:none!important}
+  .sparks{display:none!important}
   .hero__age{background:none!important;-webkit-text-fill-color:var(--gold)!important;color:var(--gold)!important}
 }
 </style>
@@ -225,8 +217,6 @@ img{max-width:100%}
 
 <main>
   <section class="hero">
-    <svg class="hero__rays" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="0.55" aria-hidden="true" id="rays"></svg>
-    <div class="hero__glow" aria-hidden="true"></div>
     <div class="sparks" id="sparks-hero" aria-hidden="true"></div>
 
     <div class="hero__inner">
@@ -258,13 +248,6 @@ img{max-width:100%}
   <div class="band" aria-hidden="true"></div>
 
   <section class="words">
-    <svg class="words__halo" viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="0.7" aria-hidden="true">
-      <circle cx="100" cy="100" r="96"/><circle cx="100" cy="100" r="78"/><circle cx="100" cy="100" r="44"/>
-      <path d="M100 22v22M100 156v22M22 100h22M156 100h22"/>
-      <path d="M45 45l16 16M139 139l16 16M155 45l-16 16M61 139l-16 16"/>
-      <path d="M56 100q44-46 88 0-44 46-88 0z"/>
-      <path d="M100 56q46 44 0 88-46-44 0-88z"/>
-    </svg>
     <div class="card">
       <svg class="card__corner card__corner--tl" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M25 1H8Q1 1 1 8v17"/><path d="M6 6q6-4 10 0-6 4-10 0z"/></svg>
       <svg class="card__corner card__corner--tr" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.1" aria-hidden="true"><path d="M25 1H8Q1 1 1 8v17"/><path d="M6 6q6-4 10 0-6 4-10 0z"/></svg>
@@ -404,24 +387,6 @@ img{max-width:100%}
 (function () {
   var reduce = window.matchMedia
     && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  // ---- күн сәулесіндей алтын шашақ ----
-  var rays = document.getElementById('rays');
-  if (rays && !reduce) {
-    var d = '';
-    for (var a = 0; a < 360; a += 4.5) {
-      var rad = a * Math.PI / 180;
-      var inner = (a % 18 === 0) ? 40 : 62;
-      d += 'M' + (100 + Math.cos(rad) * inner).toFixed(2) + ' ' + (100 + Math.sin(rad) * inner).toFixed(2)
-         + 'L' + (100 + Math.cos(rad) * 99).toFixed(2) + ' ' + (100 + Math.sin(rad) * 99).toFixed(2);
-    }
-    var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-    path.setAttribute('d', d);
-    rays.appendChild(path);
-    var ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-    ring.setAttribute('cx', '100'); ring.setAttribute('cy', '100'); ring.setAttribute('r', '68');
-    rays.appendChild(ring);
-  }
 
   // ---- кері санақ: 3 қаңтар 2027, сағат 13:00 Астана уақыты (UTC+5) ----
   var target = Date.UTC(2027, 0, 3, 8, 0, 0);
