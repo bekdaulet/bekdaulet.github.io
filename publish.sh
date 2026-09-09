@@ -28,6 +28,21 @@ if [[ -z "$msg" ]]; then
   msg="Update site $(date '+%Y-%m-%d %H:%M')"
 fi
 
+# Refresh sitemap dates for pages that changed in this publish.
+today="$(date +%Y-%m-%d)"
+for page in index.html kk/index.html ru/index.html; do
+  if [[ -n "$(git status --porcelain -- "$page")" ]]; then
+    loc="https://bekdaulet.github.io/${page%index.html}"
+    python3 - "$loc" "$today" <<'PY'
+import re, sys
+loc, today = sys.argv[1], sys.argv[2]
+s = open('sitemap.xml').read()
+s = re.sub(r'(<loc>' + re.escape(loc) + r'</loc>\s*<lastmod>)[^<]+', r'\g<1>' + today, s)
+open('sitemap.xml', 'w').write(s)
+PY
+  fi
+done
+
 git add -A
 git commit -q -m "$msg"
 git push -q

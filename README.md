@@ -12,6 +12,8 @@ Personal academic website of Bekdaulet Shukirgaliyev. Static HTML and CSS, hoste
 | `style.css` | Shared styles, colors, fonts, layout |
 | `assets/photo.jpg` | Portrait shown in the header |
 | `assets/Shukirgaliyev_CV.pdf` | CV linked from the "Download CV" button |
+| `robots.txt`, `sitemap.xml` | Search engine hints; `publish.sh` updates the sitemap dates |
+| `publish.sh` | Commit and push everything, then wait for the GitHub Pages build |
 
 ## Editing text
 
