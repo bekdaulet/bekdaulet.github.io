@@ -103,11 +103,13 @@ img{max-width:100%}
 .rsvp__hint{margin:0 auto clamp(28px,5vw,38px);max-width:440px;font-size:14px;line-height:1.6;color:rgba(251,248,243,.7);text-align:center;animation:rise .9s ease .2s both}
 .form-wrap{background:var(--ivory);border-radius:4px;padding:8px;animation:rise .9s ease .3s both}
 .form-wrap iframe{display:block;width:100%;height:1180px;border:0;border-radius:2px}
-.rsvp__fallback{margin:22px 0 0;text-align:center;font-size:14px;color:rgba(251,248,243,.62)}
-.rsvp__fallback a{color:var(--altyn-soft)}
-.rsvp__pending{background:rgba(10,21,38,.45);border:1px solid rgba(201,162,74,.35);border-radius:4px;padding:clamp(26px,5vw,38px) 24px;text-align:center;animation:rise .9s ease .3s both}
-.rsvp__pending p{margin:0 0 16px;font-size:15px;line-height:1.65;color:rgba(251,248,243,.78)}
-.rsvp__pending p:last-child{margin:0}
+.reply{display:grid;gap:18px;justify-items:center;animation:rise .9s ease .3s both}
+.cta-wa{position:relative;overflow:hidden;display:inline-flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:420px;padding:18px 26px;border-radius:3px;background:var(--kok);color:#fff;font-size:14px;font-weight:700;letter-spacing:.08em;text-decoration:none;transition:background .3s ease}
+.cta-wa::after{content:"";position:absolute;top:0;left:-60%;width:45%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:skewX(-18deg);transition:left .6s ease}
+.cta-wa:hover::after,.cta-wa:focus-visible::after{left:115%}
+.cta-wa:hover,.cta-wa:focus-visible{background:var(--kok-deep);outline:none}
+.cta-tel{font-size:14px;color:rgba(251,248,243,.66);text-decoration:none;border-bottom:1px solid rgba(251,248,243,.22);padding-bottom:3px;transition:color .3s ease,border-color .3s ease}
+.cta-tel:hover,.cta-tel:focus-visible{color:var(--altyn-soft);border-color:var(--altyn-soft);outline:none}
 
 /* 6. footer */
 .foot{background:var(--ink-deep);color:rgba(251,248,243,.72);padding:clamp(48px,8vw,76px) 24px clamp(36px,6vw,56px);text-align:center}
@@ -212,15 +214,16 @@ img{max-width:100%}
       <h2 class="rsvp__title">Келетініңізді белгілеп қойыңыз</h2>
       <p class="rsvp__hint">Дастархан мен орынды дұрыс дайындауымыз үшін жауабыңыз бізге өте қажет. Бір минут уақытыңызды аласыз.</p>
 
-      <!-- ФОРМА: Google Form-ның embed сілтемесі осында қойылады -->
-      <div class="rsvp__pending" id="form-pending">
-        <p>Жауап беру формасы дайындалып жатыр.</p>
-        <p>Әзірге қатысатыныңызды телефон арқылы хабарлай аласыз.</p>
+      <!-- ФОРМА: Google Form қосылғанда осы блок сол формамен ауыстырылады -->
+      <div class="reply">
+        <a class="cta-wa" href="https://wa.me/77075130455?text=%D0%A1%D3%99%D0%BB%D0%B5%D0%BC%D0%B5%D1%82%D1%81%D1%96%D0%B7%20%D0%B1%D0%B5!%20%D0%A2%D0%B5%D0%BC%D1%96%D1%80%D0%B1%D0%BE%D0%BB%D0%B0%D1%82%20%D0%B0%D2%93%D0%B0%D0%BC%D1%8B%D0%B7%D0%B4%D1%8B%D2%A3%2080%20%D0%B6%D0%B0%D1%81%20%D0%BC%D0%B5%D1%80%D0%B5%D0%B9%D1%82%D0%BE%D0%B9%D1%8B%D0%BD%D0%B0%20%D0%9A%D0%95%D0%9B%D0%95%D0%9C%D0%86%D0%9D.%0A%D0%90%D1%82%D1%8B-%D0%B6%D3%A9%D0%BD%D1%96%D0%BC%3A%20%0A%D0%91%D0%B0%D1%80%D0%BB%D1%8B%D2%93%D1%8B%20%D0%B0%D0%B4%D0%B0%D0%BC%20%D1%81%D0%B0%D0%BD%D1%8B%3A%20" target="_blank" rel="noopener noreferrer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.91-4.45 9.91-9.91S17.5 2 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.24 8.24 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24 2.2 0 4.27.86 5.83 2.42a8.2 8.2 0 0 1 2.41 5.83c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.8-.78.97-.15.16-.29.18-.54.06-.25-.13-1.05-.39-1.99-1.23-.74-.66-1.23-1.47-1.38-1.72-.14-.25-.01-.38.11-.5.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.16.04-.31-.02-.43-.06-.12-.56-1.34-.76-1.84-.2-.48-.4-.42-.56-.43h-.47c-.16 0-.43.06-.65.31-.22.25-.85.84-.85 2.03 0 1.2.87 2.36.99 2.52.12.16 1.71 2.61 4.15 3.66.58.25 1.03.4 1.39.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.29z"/>
+          </svg>
+          WhatsApp арқылы жауап беру
+        </a>
+        <a class="cta-tel" href="tel:+77075130455">Немесе қоңырау шалыңыз: +7 707 513 04 55</a>
       </div>
-
-      <p class="rsvp__fallback" id="form-fallback" hidden>
-        Форма ашылмаса, <a href="#" id="form-direct" target="_blank" rel="noopener noreferrer">осы сілтеме арқылы</a> толтырыңыз.
-      </p>
     </div>
   </section>
 
