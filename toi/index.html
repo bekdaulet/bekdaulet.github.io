@@ -86,10 +86,10 @@ img{max-width:100%}
 /* Сурет толық көрінеді: қорап суреттің өз пропорциясымен бірдей, ештеңе
    қиылмайды. Шеттері ғана жұмсақ жолақпен мөлдірленіп фонға сіңеді —
    жақтау да, сақина да жоқ. */
-.portrait{position:relative;margin:0 auto;width:min(430px,86vw);aspect-ratio:1100/1971}
+.portrait{position:relative;margin:0 auto;width:min(470px,88vw);aspect-ratio:1/1}
 .portrait__img{display:block;width:100%;height:100%;object-fit:cover;
-  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 54%,rgba(0,0,0,.85) 74%,rgba(0,0,0,.3) 89%,transparent 100%);
-  mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 54%,rgba(0,0,0,.85) 74%,rgba(0,0,0,.3) 89%,transparent 100%);
+  -webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 58%,rgba(0,0,0,.85) 76%,rgba(0,0,0,.3) 90%,transparent 100%);
+  mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#000 58%,rgba(0,0,0,.85) 76%,rgba(0,0,0,.3) 90%,transparent 100%);
   animation:bloom 2.2s cubic-bezier(.16,.84,.32,1) both}
 /* Қолдайтын браузерлерде: төрт шетті де жолақпен жұмсартамыз, ортасы толық
    ашық қалады — сурет түгел көрінеді. */
@@ -98,16 +98,16 @@ img{max-width:100%}
     /* Аралық нүктелері бар жұмсақ құлдырау — шеті кенет үзілмей, біртіндеп
        жоғалады, сондықтан тіктөртбұрыш байқалмайды. */
     -webkit-mask-image:
-      linear-gradient(to right,transparent 0,rgba(0,0,0,.22) 5%,rgba(0,0,0,.62) 11%,rgba(0,0,0,.9) 17%,#000 24%,#000 76%,rgba(0,0,0,.9) 83%,rgba(0,0,0,.62) 89%,rgba(0,0,0,.22) 95%,transparent 100%),
-      linear-gradient(to bottom,transparent 0,rgba(0,0,0,.28) 3.5%,rgba(0,0,0,.72) 7%,#000 13%,#000 78%,rgba(0,0,0,.9) 86%,rgba(0,0,0,.55) 92%,rgba(0,0,0,.18) 96%,transparent 100%);
+      linear-gradient(to right,transparent 0,rgba(0,0,0,.25) 4%,rgba(0,0,0,.66) 8.5%,rgba(0,0,0,.92) 13%,#000 18%,#000 82%,rgba(0,0,0,.92) 87%,rgba(0,0,0,.66) 91.5%,rgba(0,0,0,.25) 96%,transparent 100%),
+      linear-gradient(to bottom,transparent 0,rgba(0,0,0,.25) 4%,rgba(0,0,0,.66) 8.5%,rgba(0,0,0,.92) 13%,#000 18%,#000 82%,rgba(0,0,0,.92) 87%,rgba(0,0,0,.66) 91.5%,rgba(0,0,0,.25) 96%,transparent 100%);
     mask-image:
-      linear-gradient(to right,transparent 0,rgba(0,0,0,.22) 5%,rgba(0,0,0,.62) 11%,rgba(0,0,0,.9) 17%,#000 24%,#000 76%,rgba(0,0,0,.9) 83%,rgba(0,0,0,.62) 89%,rgba(0,0,0,.22) 95%,transparent 100%),
-      linear-gradient(to bottom,transparent 0,rgba(0,0,0,.28) 3.5%,rgba(0,0,0,.72) 7%,#000 13%,#000 78%,rgba(0,0,0,.9) 86%,rgba(0,0,0,.55) 92%,rgba(0,0,0,.18) 96%,transparent 100%);
+      linear-gradient(to right,transparent 0,rgba(0,0,0,.25) 4%,rgba(0,0,0,.66) 8.5%,rgba(0,0,0,.92) 13%,#000 18%,#000 82%,rgba(0,0,0,.92) 87%,rgba(0,0,0,.66) 91.5%,rgba(0,0,0,.25) 96%,transparent 100%),
+      linear-gradient(to bottom,transparent 0,rgba(0,0,0,.25) 4%,rgba(0,0,0,.66) 8.5%,rgba(0,0,0,.92) 13%,#000 18%,#000 82%,rgba(0,0,0,.92) 87%,rgba(0,0,0,.66) 91.5%,rgba(0,0,0,.25) 96%,transparent 100%);
     -webkit-mask-size:100% 100%;mask-size:100% 100%;
     -webkit-mask-composite:source-in;mask-composite:intersect}
 }
 
-.hero__name{margin:clamp(-46px,-7vw,-20px) 0 0;font-family:var(--display);font-weight:500;font-size:clamp(42px,11.5vw,76px);line-height:1.04;color:var(--ink);animation:rise 1s ease .35s both}
+.hero__name{margin:clamp(-30px,-4.6vw,-12px) 0 0;font-family:var(--display);font-weight:500;font-size:clamp(42px,11.5vw,76px);line-height:1.04;color:var(--ink);animation:rise 1s ease .35s both}
 .hero__age{display:block;margin:clamp(6px,1.6vw,12px) 0 clamp(12px,2.6vw,18px);font-family:var(--display);font-size:clamp(66px,20vw,132px);font-weight:600;line-height:1;color:var(--gold);animation:rise 1s ease .48s both}
 @supports ((-webkit-background-clip:text) or (background-clip:text)){
   .hero__age{background:linear-gradient(100deg,#a3711f 0%,#c8942f 28%,#f0d79a 50%,#c8942f 72%,#a3711f 100%);
@@ -118,10 +118,9 @@ img{max-width:100%}
 .hero__lead{margin:0 auto;max-width:460px;font-size:var(--fs-lead);line-height:1.62;color:var(--ink-soft);animation:rise 1s ease .58s both}
 .hero__when{margin:clamp(24px,4.4vw,34px) 0 0;display:inline-flex;align-items:center;gap:12px;padding:13px 28px;border-radius:999px;background:var(--white);box-shadow:0 6px 20px rgba(150,110,50,.13);font-size:clamp(13px,.7vw + 10.5px,15px);font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);animation:rise 1s ease .68s both}
 
-/* Кең экранда бәрі ортада қалады, тек суреттің биіктігі терезеге қарай
-   шектеледі — сонда аты мен «80» тым төмен кетпейді. */
+/* Кең экранда сурет тым үлкейіп кетпеуі үшін биіктігі де шектеледі. */
 @media(min-width:900px){
-  .portrait{width:auto;height:min(68vh,700px)}
+  .portrait{width:auto;height:min(56vh,470px)}
 }
 
 /* ---------- 2. countdown ---------- */
@@ -231,7 +230,7 @@ img{max-width:100%}
   margin:0 clamp(12px,3.5vw,22px) clamp(16px,3.6vh,30px);
   padding:clamp(22px,3.4vh,34px) clamp(18px,5vw,30px) clamp(24px,3.8vh,36px);
   border:1px solid rgba(184,134,47,.3);border-radius:12px;
-  background:rgba(253,249,242,.86);
+  background:rgba(253,249,242,.6);
   -webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1);
   box-shadow:0 18px 48px rgba(40,28,10,.3);
   animation:rise .9s ease .25s both}
@@ -310,7 +309,7 @@ img{max-width:100%}
       <p class="eyebrow hero__eyebrow">Құрметті қонақ</p>
 
       <figure class="portrait">
-        <img class="portrait__img" src="assets/ata.jpg" alt="Темірболат ата" width="1100" height="1971" fetchpriority="high">
+        <img class="portrait__img" src="assets/ata2.jpg" alt="Темірболат ата" width="1100" height="1100" fetchpriority="high">
       </figure>
 
       <h1 class="hero__name">Темірболат</h1>
@@ -466,7 +465,7 @@ img{max-width:100%}
       <path d="M144 9 q-9 -8 -17 0 q9 8 17 0 z" opacity=".8"/>
     </svg>
     <p class="foot__sign">Темірболат әкеміздің 80 жас мерейтойы<br>Бала-келіні, немерелері</p>
-    <p class="foot__credit">Ән: Мұхтар Түнқатар, «Әкеме қошемет»</p>
+    <p class="foot__credit">Ән: Жолдасбек Абдиханов, «Менің әкем — ең жақсы адам»</p>
   </footer>
 </main>
 
