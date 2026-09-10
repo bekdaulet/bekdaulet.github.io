@@ -216,18 +216,23 @@ img{max-width:100%}
   padding:28px 22px;text-align:center;background:var(--cream) var(--pattern) repeat;
   opacity:1;transition:opacity .7s ease,transform .7s ease}
 .gate.is-gone{opacity:0;transform:scale(1.04);pointer-events:none}
-.gate__inner{max-width:520px}
-.gate__eyebrow{color:var(--gold);margin-bottom:clamp(18px,3.4vw,28px);animation:rise .7s ease both}
-.gate__name{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(38px,10vw,64px);line-height:1.08;color:var(--ink);animation:rise .8s ease .1s both}
-.gate__age{display:block;margin:clamp(6px,1.6vw,12px) 0 clamp(10px,2.2vw,16px);font-family:var(--display);font-size:clamp(58px,17vw,110px);font-weight:600;line-height:1;color:var(--gold);animation:rise .8s ease .18s both}
-.gate__sub{margin:0 auto clamp(30px,5vw,44px);max-width:360px;font-size:var(--fs-mid);line-height:1.6;color:var(--ink-soft);animation:rise .8s ease .26s both}
-.gate__btn{display:inline-flex;align-items:center;gap:12px;padding:19px 38px;border:none;border-radius:999px;
-  background:linear-gradient(100deg,var(--gold) 0%,#d1a044 50%,var(--gold) 100%);color:#fff;
-  font-family:var(--sans);font-size:var(--fs-btn);font-weight:700;letter-spacing:.14em;text-transform:uppercase;
-  cursor:pointer;box-shadow:0 10px 26px rgba(184,134,47,.32);
-  transition:transform .25s ease,box-shadow .3s ease;animation:rise .8s ease .34s both}
-.gate__btn:hover,.gate__btn:focus-visible{transform:translateY(-2px);box-shadow:0 14px 32px rgba(184,134,47,.42);outline:none}
-.gate__note{margin:clamp(16px,3vw,24px) 0 0;font-size:var(--fs-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);animation:rise .8s ease .42s both}
+.gate__inner{display:flex;flex-direction:column;align-items:center;max-width:520px}
+.gate__photo{margin:0;width:auto;height:clamp(210px,40vh,400px);aspect-ratio:3/4;animation:bloom 1.4s cubic-bezier(.16,.84,.32,1) both}
+.gate__photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 16%;
+  -webkit-mask-image:radial-gradient(ellipse 46% 46% at 50% 44%,#000 30%,rgba(0,0,0,.9) 52%,rgba(0,0,0,.3) 78%,transparent 100%);
+  mask-image:radial-gradient(ellipse 46% 46% at 50% 44%,#000 30%,rgba(0,0,0,.9) 52%,rgba(0,0,0,.3) 78%,transparent 100%)}
+.gate__name{margin:clamp(-22px,-2.6vh,-10px) 0 0;font-family:var(--display);font-weight:500;font-size:clamp(31px,7.6vw,48px);line-height:1.1;color:var(--ink);animation:rise .8s ease .12s both}
+.gate__age{margin:clamp(2px,.7vh,10px) 0 0;font-family:var(--display);font-weight:600;font-size:clamp(38px,10.4vw,64px);line-height:1;color:var(--gold);animation:rise .8s ease .2s both}
+.gate__lead{margin:clamp(10px,1.7vh,20px) 0 0;font-family:var(--display);font-size:clamp(18px,4.6vw,25px);line-height:1.34;color:var(--ink-soft);animation:rise .8s ease .28s both}
+.gate__btn{position:relative;margin-top:clamp(22px,3.6vh,42px);
+  width:clamp(98px,25vw,124px);height:clamp(98px,25vw,124px);border:none;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  background:linear-gradient(140deg,#c8942f 0%,#d9ab52 46%,#b8862f 100%);color:#fff;
+  font-family:var(--sans);font-size:var(--fs-btn);font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  cursor:pointer;box-shadow:0 12px 28px rgba(184,134,47,.34);
+  transition:transform .25s ease,box-shadow .3s ease;animation:rise .8s ease .36s both}
+.gate__btn::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(184,134,47,.55);animation:halo 2.8s ease-out infinite;pointer-events:none}
+.gate__btn:hover,.gate__btn:focus-visible{transform:translateY(-2px) scale(1.03);box-shadow:0 16px 34px rgba(184,134,47,.44);outline:none}
 
 /* ---------- music ---------- */
 .music-dock{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;align-items:center;gap:9px;pointer-events:none}
@@ -259,17 +264,13 @@ img{max-width:100%}
 
 <div class="gate" id="gate" hidden>
   <div class="gate__inner">
-    <p class="eyebrow gate__eyebrow">Құрметті қонақ</p>
+    <figure class="gate__photo">
+      <img src="assets/ata.jpg" alt="Темірболат ата" width="1100" height="1971" fetchpriority="high">
+    </figure>
     <p class="gate__name">Темірболат</p>
-    <span class="gate__age">80</span>
-    <p class="gate__sub">әкеміздің сексен жас мерейтойына шақырамыз</p>
-    <button class="gate__btn" id="gate-btn" type="button">
-      <svg width="17" height="18" viewBox="0 0 17 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-        <path d="M6.2 13.2V3.4l9-1.9v9.8"/><circle cx="3.9" cy="13.9" r="2.4"/><circle cx="12.9" cy="11.9" r="2.4"/>
-      </svg>
-      Шақыруды ашу
-    </button>
-    <p class="gate__note">Ән қосылады</p>
+    <p class="gate__age">80-жас</p>
+    <p class="gate__lead">мерейтойға<br>шақыру</p>
+    <button class="gate__btn" id="gate-btn" type="button" aria-label="Шақыруды ашу">ашу</button>
   </div>
 </div>
 
