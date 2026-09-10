@@ -215,6 +215,8 @@ img{max-width:100%}
 .gate{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
   padding:28px 22px;text-align:center;background:var(--cream) var(--pattern) repeat;
   opacity:1;transition:opacity .7s ease,transform .7s ease}
+/* display:flex әйтпесе HTML-дегі hidden атрибутын жеңіп кетеді. */
+.gate[hidden]{display:none!important}
 .gate.is-gone{opacity:0;transform:scale(1.04);pointer-events:none}
 .gate__inner{display:flex;flex-direction:column;align-items:center;max-width:520px}
 .gate__photo{margin:0;width:auto;height:clamp(210px,40vh,400px);aspect-ratio:3/4;animation:bloom 1.4s cubic-bezier(.16,.84,.32,1) both}
@@ -616,13 +618,20 @@ img{max-width:100%}
     setTimeout(function () { gate.hidden = true; }, 800);
   }
 
-  if (gate && gateBtn && !alreadyOpened) {
-    gate.hidden = false;
-    lockScroll(true);
+  if (gate && gateBtn) {
+    // Тыңдаушы әрқашан қосылады — экран көрінсе, басу міндетті түрде жұмыс істейді.
     gate.addEventListener('click', openInvitation);
-    setTimeout(function () {
-      try { gateBtn.focus({ preventScroll: true }); } catch (e) { /* ескі браузер */ }
-    }, 120);
+    if (alreadyOpened) {
+      gateDone = true;
+      gate.hidden = true;
+      lockScroll(false);
+    } else {
+      gate.hidden = false;
+      lockScroll(true);
+      setTimeout(function () {
+        try { gateBtn.focus({ preventScroll: true }); } catch (e) { /* ескі браузер */ }
+      }, 120);
+    }
   }
 
   // ---- RSVP: Google Form-ға жасырын iframe арқылы жіберу ----
