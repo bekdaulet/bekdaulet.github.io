@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+# Private family invitation: keep its images and audio out of search.
+# The page itself stays crawlable so search engines can read its noindex tag.
+Disallow: /toi/assets/
 
 Sitemap: https://bekdaulet.github.io/sitemap.xml
