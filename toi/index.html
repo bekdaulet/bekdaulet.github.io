@@ -22,7 +22,9 @@
 <link rel="icon" href="favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
+<!-- Lora мен Golos Text қазақтың ә ғ қ ң ө ұ ү һ і әріптерін толық қолдайды.
+     Playfair Display пен Manrope-та олардың көбі жоқ болатын. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap">
 <style>
 :root{
   --cream:#fffdf9; --sand:#f8f0e2; --sand-deep:#f3e8d5; --caramel:#ecd9b6;
@@ -31,15 +33,15 @@
   --pattern:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='108' height='108' viewBox='0 0 108 108' fill='none' stroke='%23c9a24a' stroke-opacity='.26' stroke-width='1'%3E%3Cpath d='M54 22q13 14 0 28-13-14 0-28z'/%3E%3Cpath d='M40 36q14 13 28 0-14-13-28 0z' stroke-opacity='.16'/%3E%3Ccircle cx='54' cy='36' r='3.5'/%3E%3Cpath d='M0 90q13 13 26 0-13-13-26 0zM82 90q13 13 26 0-13-13-26 0z' stroke-opacity='.18'/%3E%3C/svg%3E");
   --kok:#2e8f9e; --kok-deep:#22707c; --kok-pale:#dceef0;
   --line:#e9dcc4; --white:#fff;
-  --display:"Playfair Display","Times New Roman",Georgia,serif;
-  --sans:"Manrope","Segoe UI",system-ui,-apple-system,sans-serif;
+  --display:"Lora","PT Serif","Times New Roman",serif;
+  --sans:"Golos Text","Segoe UI",system-ui,-apple-system,sans-serif;
   /* Шрифт шкаласы: телефоннан компьютерге дейін бірге өседі.
      Ең кішісі 11.5px — одан ұсақ мәтін бетте жоқ. */
-  --fs-micro:clamp(11.5px, 0.95vw + 8px, 13px);   /* тақырыпша, белгі  */
-  --fs-small:clamp(14.2px, 1.1vw + 10px, 16px);   /* қосымша мәтін     */
-  --fs-mid:clamp(15px, 1.1vw + 11px, 17px);       /* түсіндірме        */
-  --fs-lead:clamp(16.5px, 1.4vw + 11px, 19.5px);  /* негізгі жол       */
-  --fs-btn:clamp(13.5px, 0.6vw + 11.5px, 15px);   /* батырма           */
+  --fs-micro:clamp(12.5px, 1vw + 8.5px, 14px);    /* тақырыпша, белгі  */
+  --fs-small:clamp(15px, 1.1vw + 10.7px, 17px);   /* қосымша мәтін     */
+  --fs-mid:clamp(16px, 1.1vw + 11.7px, 18px);     /* түсіндірме        */
+  --fs-lead:clamp(17.5px, 1.4vw + 12px, 20.5px);  /* негізгі жол       */
+  --fs-btn:clamp(14px, 0.6vw + 12px, 15.5px);     /* батырма           */
   --band:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='84' height='22' viewBox='0 0 84 22' fill='none' stroke='%23b8862f' stroke-width='1.1'%3E%3Cpath d='M0 11h26M58 11h26'/%3E%3Cpath d='M42 3.5l7.5 7.5-7.5 7.5-7.5-7.5z'/%3E%3Cpath d='M26 11q8-7 16 0-8 7-16 0z'/%3E%3Cpath d='M58 11q-8-7-16 0 8 7 16 0z'/%3E%3C/svg%3E");
 }
 *,*::before,*::after{box-sizing:border-box}
@@ -114,22 +116,12 @@ img{max-width:100%}
     animation:rise 1s ease .48s both, shine 7s ease-in-out 1.5s infinite}
 }
 .hero__lead{margin:0 auto;max-width:460px;font-size:var(--fs-lead);line-height:1.62;color:var(--ink-soft);animation:rise 1s ease .58s both}
-.hero__when{margin:clamp(24px,4.4vw,34px) 0 0;display:inline-flex;align-items:center;gap:12px;padding:13px 28px;border-radius:999px;background:var(--white);box-shadow:0 6px 20px rgba(150,110,50,.13);font-size:clamp(12.5px,.7vw + 10px,14.5px);font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);animation:rise 1s ease .68s both}
+.hero__when{margin:clamp(24px,4.4vw,34px) 0 0;display:inline-flex;align-items:center;gap:12px;padding:13px 28px;border-radius:999px;background:var(--white);box-shadow:0 6px 20px rgba(150,110,50,.13);font-size:clamp(13px,.7vw + 10.5px,15px);font-weight:700;letter-spacing:.13em;text-transform:uppercase;color:var(--gold);animation:rise 1s ease .68s both}
 
-/* Кең экранда hero екі бағанға бөлінеді: сурет сол жақта, аты мен күні оң
-   жақта. Сонда тік сурет те үлкен болады, аты да скроллсыз көрінеді. */
+/* Кең экранда бәрі ортада қалады, тек суреттің биіктігі терезеге қарай
+   шектеледі — сонда аты мен «80» тым төмен кетпейді. */
 @media(min-width:900px){
-  .hero{padding-top:clamp(28px,3.4vw,48px);padding-bottom:clamp(36px,4.6vw,64px)}
-  .hero__inner{max-width:1120px;display:grid;
-    grid-template-columns:auto minmax(300px,1fr);
-    column-gap:clamp(28px,4vw,64px);align-items:center;text-align:left}
-  .portrait{grid-column:1;grid-row:1/6;width:auto;height:min(76vh,780px);margin:0}
-  .hero__eyebrow{grid-column:2;grid-row:1;justify-content:flex-start;margin-bottom:16px}
-  .hero__eyebrow::before{display:none}
-  .hero__name{grid-column:2;grid-row:2;margin:0}
-  .hero__age{grid-column:2;grid-row:3;margin:2px 0 12px}
-  .hero__lead{grid-column:2;grid-row:4;margin:0;max-width:430px}
-  .hero__when{grid-column:2;grid-row:5;margin-top:28px;justify-self:start}
+  .portrait{width:auto;height:min(68vh,700px)}
 }
 
 /* ---------- 2. countdown ---------- */
@@ -214,7 +206,7 @@ img{max-width:100%}
 .cta-call:hover::after,.cta-call:focus-visible::after{transform:scaleX(1)}
 .foot__rule{display:block;margin:clamp(26px,4.4vw,38px) auto;color:var(--gold);opacity:.5}
 .foot__sign{margin-top:0;margin-bottom:0;font-size:var(--fs-small);line-height:1.75;color:var(--muted)}
-.foot__credit{margin-top:22px;margin-bottom:0;font-size:clamp(11.5px,.5vw + 9.5px,12.5px);line-height:1.7;color:#a8998a}
+.foot__credit{margin-top:22px;margin-bottom:0;font-size:clamp(12px,.5vw + 10px,13.5px);line-height:1.7;color:#9c8c7c}
 
 /* ---------- music ---------- */
 .music-dock{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;align-items:center;gap:9px;pointer-events:none}
