@@ -208,6 +208,27 @@ img{max-width:100%}
 .foot__sign{margin-top:0;margin-bottom:0;font-size:var(--fs-small);line-height:1.75;color:var(--muted)}
 .foot__credit{margin-top:22px;margin-bottom:0;font-size:clamp(12px,.5vw + 10px,13.5px);line-height:1.7;color:#9c8c7c}
 
+/* ---------- ашу экраны ----------
+   Браузерлер бет ашылған бойда дыбысты жібермейді, сондықтан қонақ бір рет
+   басатын мұқаба экран қоямыз: сол басу әрі шақыруды ашады, әрі әнді қосады.
+   JS өшірулі болса бұл экран мүлдем шықпайды (hide атрибуты). */
+.gate{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
+  padding:28px 22px;text-align:center;background:var(--cream) var(--pattern) repeat;
+  opacity:1;transition:opacity .7s ease,transform .7s ease}
+.gate.is-gone{opacity:0;transform:scale(1.04);pointer-events:none}
+.gate__inner{max-width:520px}
+.gate__eyebrow{color:var(--gold);margin-bottom:clamp(18px,3.4vw,28px);animation:rise .7s ease both}
+.gate__name{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(38px,10vw,64px);line-height:1.08;color:var(--ink);animation:rise .8s ease .1s both}
+.gate__age{display:block;margin:clamp(6px,1.6vw,12px) 0 clamp(10px,2.2vw,16px);font-family:var(--display);font-size:clamp(58px,17vw,110px);font-weight:600;line-height:1;color:var(--gold);animation:rise .8s ease .18s both}
+.gate__sub{margin:0 auto clamp(30px,5vw,44px);max-width:360px;font-size:var(--fs-mid);line-height:1.6;color:var(--ink-soft);animation:rise .8s ease .26s both}
+.gate__btn{display:inline-flex;align-items:center;gap:12px;padding:19px 38px;border:none;border-radius:999px;
+  background:linear-gradient(100deg,var(--gold) 0%,#d1a044 50%,var(--gold) 100%);color:#fff;
+  font-family:var(--sans);font-size:var(--fs-btn);font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+  cursor:pointer;box-shadow:0 10px 26px rgba(184,134,47,.32);
+  transition:transform .25s ease,box-shadow .3s ease;animation:rise .8s ease .34s both}
+.gate__btn:hover,.gate__btn:focus-visible{transform:translateY(-2px);box-shadow:0 14px 32px rgba(184,134,47,.42);outline:none}
+.gate__note{margin:clamp(16px,3vw,24px) 0 0;font-size:var(--fs-micro);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);animation:rise .8s ease .42s both}
+
 /* ---------- music ---------- */
 .music-dock{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;align-items:center;gap:9px;pointer-events:none}
 .music-hint{border:1px solid rgba(184,134,47,.4);border-radius:999px;background:rgba(255,255,255,.94);color:var(--gold);font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.06em;padding:11px 17px;white-space:nowrap;cursor:pointer;box-shadow:0 6px 18px rgba(150,110,50,.16);backdrop-filter:blur(6px);opacity:0;transform:translateX(10px);pointer-events:none;transition:opacity .45s ease,transform .45s ease}
@@ -235,6 +256,22 @@ img{max-width:100%}
 </style>
 </head>
 <body>
+
+<div class="gate" id="gate" hidden>
+  <div class="gate__inner">
+    <p class="eyebrow gate__eyebrow">Құрметті қонақ</p>
+    <p class="gate__name">Темірболат</p>
+    <span class="gate__age">80</span>
+    <p class="gate__sub">әкеміздің сексен жас мерейтойына шақырамыз</p>
+    <button class="gate__btn" id="gate-btn" type="button">
+      <svg width="17" height="18" viewBox="0 0 17 18" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M6.2 13.2V3.4l9-1.9v9.8"/><circle cx="3.9" cy="13.9" r="2.4"/><circle cx="12.9" cy="11.9" r="2.4"/>
+      </svg>
+      Шақыруды ашу
+    </button>
+    <p class="gate__note">Ән қосылады</p>
+  </div>
+</div>
 
 <audio id="kui" src="assets/kui.mp3" loop preload="none"></audio>
 <div class="music-dock" id="music-dock">
@@ -547,10 +584,45 @@ img{max-width:100%}
 
   function offerHint() {
     if (!audio.paused || stoppedByUser || asked) { return; }
+    var g = document.getElementById('gate');
+    if (g && !g.hidden) { return; }   // ашу экраны тұрғанда керек емес
     dock.classList.add('show-hint');
     hintTimer = setTimeout(hideHint, 9000);
   }
   setTimeout(offerHint, 2200);
+
+  // ---- ашу экраны: бір басу шақыруды да ашады, әнді де қосады ----
+  var gate = document.getElementById('gate');
+  var gateBtn = document.getElementById('gate-btn');
+  var gateDone = false;
+  var alreadyOpened = false;
+  try { alreadyOpened = sessionStorage.getItem('toi-opened') === '1'; } catch (e) { /* жеке режим */ }
+
+  function lockScroll(on) {
+    document.documentElement.style.overflow = on ? 'hidden' : '';
+    document.body.style.overflow = on ? 'hidden' : '';
+  }
+
+  function openInvitation() {
+    if (gateDone) { return; }
+    gateDone = true;
+    try { sessionStorage.setItem('toi-opened', '1'); } catch (e) { /* маңызды емес */ }
+    stoppedByUser = false;
+    start();                      // нағыз басудың ішінде — браузер рұқсат етеді
+    gate.classList.add('is-gone');
+    lockScroll(false);
+    hideHint();
+    setTimeout(function () { gate.hidden = true; }, 800);
+  }
+
+  if (gate && gateBtn && !alreadyOpened) {
+    gate.hidden = false;
+    lockScroll(true);
+    gate.addEventListener('click', openInvitation);
+    setTimeout(function () {
+      try { gateBtn.focus({ preventScroll: true }); } catch (e) { /* ескі браузер */ }
+    }, 120);
+  }
 
   // ---- RSVP: Google Form-ға жасырын iframe арқылы жіберу ----
   var form = document.getElementById('rsvp-form');
