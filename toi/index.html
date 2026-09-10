@@ -212,29 +212,41 @@ img{max-width:100%}
    Браузерлер бет ашылған бойда дыбысты жібермейді, сондықтан қонақ бір рет
    басатын мұқаба экран қоямыз: сол басу әрі шақыруды ашады, әрі әнді қосады.
    JS өшірулі болса бұл экран мүлдем шықпайды (hide атрибуты). */
-.gate{position:fixed;inset:0;z-index:60;display:flex;align-items:center;justify-content:center;
-  padding:28px 22px;text-align:center;background:var(--cream) var(--pattern) repeat;
+.gate{position:fixed;inset:0;z-index:60;display:flex;align-items:stretch;justify-content:center;
+  background:var(--cream) var(--pattern) repeat;
   opacity:1;transition:opacity .7s ease,transform .7s ease}
 /* display:flex әйтпесе HTML-дегі hidden атрибутын жеңіп кетеді. */
 .gate[hidden]{display:none!important}
 .gate.is-gone{opacity:0;transform:scale(1.04);pointer-events:none}
-.gate__inner{display:flex;flex-direction:column;align-items:center;max-width:520px}
-.gate__photo{margin:0;width:auto;height:clamp(210px,40vh,400px);aspect-ratio:3/4;animation:bloom 1.4s cubic-bezier(.16,.84,.32,1) both}
-.gate__photo img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 16%;
-  -webkit-mask-image:radial-gradient(ellipse 46% 46% at 50% 44%,#000 30%,rgba(0,0,0,.9) 52%,rgba(0,0,0,.3) 78%,transparent 100%);
-  mask-image:radial-gradient(ellipse 46% 46% at 50% 44%,#000 30%,rgba(0,0,0,.9) 52%,rgba(0,0,0,.3) 78%,transparent 100%)}
-.gate__name{margin:clamp(-22px,-2.6vh,-10px) 0 0;font-family:var(--display);font-weight:500;font-size:clamp(31px,7.6vw,48px);line-height:1.1;color:var(--ink);animation:rise .8s ease .12s both}
-.gate__age{margin:clamp(2px,.7vh,10px) 0 0;font-family:var(--display);font-weight:600;font-size:clamp(38px,10.4vw,64px);line-height:1;color:var(--gold);animation:rise .8s ease .2s both}
-.gate__lead{margin:clamp(10px,1.7vh,20px) 0 0;font-family:var(--display);font-size:clamp(18px,4.6vw,25px);line-height:1.34;color:var(--ink-soft);animation:rise .8s ease .28s both}
-.gate__btn{position:relative;margin-top:clamp(22px,3.6vh,42px);
-  width:clamp(98px,25vw,124px);height:clamp(98px,25vw,124px);border:none;border-radius:50%;
+
+/* Сурет бүкіл экранды алады, мәтін мен батырма төменде мөлдір панельде. */
+.gate__stage{position:relative;display:flex;align-items:flex-end;width:100%;overflow:hidden}
+@media(min-width:900px){.gate__stage{max-width:470px;box-shadow:0 0 70px rgba(60,40,15,.18)}}
+.gate__bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 18%;
+  animation:bloom 2.4s cubic-bezier(.16,.84,.32,1) both}
+.gate__veil{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(28,20,8,.18) 0%,rgba(28,20,8,0) 30%,rgba(28,20,8,.28) 62%,rgba(28,20,8,.6) 100%)}
+
+.gate__panel{position:relative;z-index:2;width:100%;text-align:center;
+  margin:0 clamp(12px,3.5vw,22px) clamp(16px,3.6vh,30px);
+  padding:clamp(22px,3.4vh,34px) clamp(18px,5vw,30px) clamp(24px,3.8vh,36px);
+  border:1px solid rgba(184,134,47,.3);border-radius:12px;
+  background:rgba(253,249,242,.86);
+  -webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1);
+  box-shadow:0 18px 48px rgba(40,28,10,.3);
+  animation:rise .9s ease .25s both}
+.gate__name{margin:0;font-family:var(--display);font-weight:500;font-size:clamp(29px,7.4vw,40px);line-height:1.1;color:var(--ink)}
+.gate__age{margin:clamp(2px,.6vh,8px) 0 0;font-family:var(--display);font-weight:600;font-size:clamp(35px,9.6vw,50px);line-height:1;color:var(--gold)}
+.gate__lead{margin:clamp(8px,1.4vh,14px) 0 0;font-family:var(--display);font-size:clamp(16px,4.2vw,21px);line-height:1.34;color:var(--ink-soft)}
+.gate__btn{position:relative;margin-top:clamp(18px,2.8vh,30px);
+  width:clamp(92px,23vw,112px);height:clamp(92px,23vw,112px);border:none;border-radius:50%;
   display:inline-flex;align-items:center;justify-content:center;
   background:linear-gradient(140deg,#c8942f 0%,#d9ab52 46%,#b8862f 100%);color:#fff;
   font-family:var(--sans);font-size:var(--fs-btn);font-weight:700;letter-spacing:.18em;text-transform:uppercase;
-  cursor:pointer;box-shadow:0 12px 28px rgba(184,134,47,.34);
-  transition:transform .25s ease,box-shadow .3s ease;animation:rise .8s ease .36s both}
-.gate__btn::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(184,134,47,.55);animation:halo 2.8s ease-out infinite;pointer-events:none}
-.gate__btn:hover,.gate__btn:focus-visible{transform:translateY(-2px) scale(1.03);box-shadow:0 16px 34px rgba(184,134,47,.44);outline:none}
+  cursor:pointer;box-shadow:0 12px 28px rgba(184,134,47,.4);
+  transition:transform .25s ease,box-shadow .3s ease}
+.gate__btn::after{content:"";position:absolute;inset:-5px;border-radius:50%;border:1px solid rgba(184,134,47,.6);animation:halo 2.8s ease-out infinite;pointer-events:none}
+.gate__btn:hover,.gate__btn:focus-visible{transform:translateY(-2px) scale(1.03);box-shadow:0 16px 34px rgba(184,134,47,.5);outline:none}
 
 /* ---------- music ---------- */
 .music-dock{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;align-items:center;gap:9px;pointer-events:none}
@@ -265,14 +277,15 @@ img{max-width:100%}
 <body>
 
 <div class="gate" id="gate" hidden>
-  <div class="gate__inner">
-    <figure class="gate__photo">
-      <img src="assets/ata.jpg" alt="Темірболат ата" width="1100" height="1971" fetchpriority="high">
-    </figure>
-    <p class="gate__name">Темірболат</p>
-    <p class="gate__age">80-жас</p>
-    <p class="gate__lead">мерейтойға<br>шақыру</p>
-    <button class="gate__btn" id="gate-btn" type="button" aria-label="Шақыруды ашу">ашу</button>
+  <div class="gate__stage">
+    <img class="gate__bg" src="assets/ata.jpg" alt="" width="1100" height="1971" fetchpriority="high">
+    <div class="gate__veil" aria-hidden="true"></div>
+    <div class="gate__panel">
+      <p class="gate__name">Темірболат</p>
+      <p class="gate__age">80-жас</p>
+      <p class="gate__lead">мерейтойға<br>шақыру</p>
+      <button class="gate__btn" id="gate-btn" type="button" aria-label="Шақыруды ашу">ашу</button>
+    </div>
   </div>
 </div>
 
