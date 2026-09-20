@@ -10,7 +10,9 @@ YouTube сілтемесі автоматты түрде превью-карто
 
 ## Бейнесабақтар
 
-- [YouTube арнам](https://www.youtube.com/@BekdauletShukirgaliyev) — жаңа бейнесабақтар осында шығады
+- [Менің бейнесабақтарым (YouTube тізімі «Нұрали»)](https://www.youtube.com/playlist?list=PLb-DsI-blHuo) — жаңа сабақтар осы тізімге қосылады
+- [Салыстырмалы жылдамдық](https://www.youtube.com/watch?v=oOpNSiEvA9k) — кинематика
+- [РЛ Физика (YouTube арнасы)](https://www.youtube.com/@%D0%A0%D0%9B%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0) — олимпиадалық физика бойынша орысша бейнесабақтар
 
 ## Қосымша материалдар
 
@@ -18,5 +20,3 @@ YouTube сілтемесі автоматты түрде превью-карто
 
 - [Олимпиадная физика. 8 класс. Задачник 2023](https://mathus.ru/phys/8phys2023.pdf) — И. В. Яковлев, MathUs.ru; соңғы жылдардағы олимпиада есептері (PDF)
 - [Олимпиадная физика. 9 класс. Задачник 2023](https://mathus.ru/phys/9phys2023.pdf) — И. В. Яковлев, MathUs.ru; келесі деңгей (PDF)
-- [3800 задач по физике для школьников и поступающих в вузы](https://www.google.com/search?q=3800+%D0%B7%D0%B0%D0%B4%D0%B0%D1%87+%D0%BF%D0%BE+%D1%84%D0%B8%D0%B7%D0%B8%D0%BA%D0%B5) — Турчина Н. В. және басқалар; негізгі жинақ
-- [Физика. 7-сынып. Есептер жинағы](https://www.google.com/search?q=Edlight+Academy+%D1%84%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0+7+%D1%81%D1%8B%D0%BD%D1%8B%D0%BF+%D0%B5%D1%81%D0%B5%D0%BF%D1%82%D0%B5%D1%80+%D0%B6%D0%B8%D0%BD%D0%B0%D2%93%D1%8B) — Edlight Academy
