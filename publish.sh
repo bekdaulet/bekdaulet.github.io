@@ -28,6 +28,17 @@ if [[ -z "$msg" ]]; then
   msg="Update site $(date '+%Y-%m-%d %H:%M')"
 fi
 
+# Physics lessons: copy finished HTML from the Cowork teaching folder into
+# physo/lessons/, then rebuild physo/index.html from them. Deletions there are
+# not mirrored; remove a lesson from physo/lessons/ by hand if needed.
+PHYSO_SRC="$HOME/Documents/personal/teaching/physics_8grade_kz/web"
+if [[ -d "$PHYSO_SRC" ]]; then
+  rsync -a --include='*/' --include='*.html' --include='*.png' --include='*.jpg' --include='*.jpeg' \
+        --include='*.svg' --include='*.gif' --include='*.pdf' --include='*.css' --include='*.js' \
+        --exclude='*' "$PHYSO_SRC/" physo/lessons/
+fi
+python3 physo/build.py
+
 # Refresh sitemap dates for pages that changed in this publish.
 today="$(date +%Y-%m-%d)"
 for page in index.html kk/index.html ru/index.html; do
