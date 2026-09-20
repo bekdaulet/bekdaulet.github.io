@@ -1,0 +1,844 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Оптика тренажёры</title>
+<meta name="description" content="Көлеңке, жазық айна, сыну, толық ішкі шағылу, талшықты оптика және жұқа линза — алты интерактивті бөлім.">
+<!--
+  ЗАМЕТКА ДЛЯ СЕССИИ, КОТОРАЯ ПУБЛИКУЕТ САЙТ
+  ==========================================
+  Что это: интерактивный тренажёр по геометрической оптике, шесть вкладок:
+    1. Көлеңке        — тень: точечный источник / два точечных / протяжённый
+    2. Жазық айна     — плоское зеркало, поле зрения, мнимое изображение
+    3. Сыну           — закон Снеллиуса без отражённого луча (чистая картинка)
+    4. Сыну + шағылу  — то же плюс частично отражённый луч, его толщина растёт с углом
+    5. Талшықты оптика — полное внутреннее отражение в волокне, апертура, число отражений
+    6. Жұқа линза     — построение изображения, все случаи
+  Кнопка «Шектік бұрышқа қою» во вкладках 3 и 4 ставит ровно критический угол,
+  и видно, как преломлённый луч скользит вдоль границы (β = 90°).
+  Всё рисуется по реальным формулам, чисел «на глаз» нет.
+
+  Язык интерфейса — казахский, страница полностью самодостаточна:
+  ни одной внешней зависимости, кроме шрифта Noto Sans с Google Fonts.
+  Если сайт должен работать офлайн — уберите «link» на шрифты,
+  fallback-стек ('Segoe UI', system-ui) подхватит и казахские буквы.
+
+  Ничего не минифицировать и не прогонять через сборщик: SVG строится
+  скриптом во время работы страницы, статический анализ его не увидит.
+
+  Вкладки переключаются атрибутом hidden. Правило .stage[hidden]{display:none}
+  в начале стилей обязательно: без него display:grid перебивает hidden
+  и все шесть разделов показываются друг под другом.
+
+  Сопровождающие материалы (не на сайте): колода слайдов по оптике и
+  сценарий видеолекции — 2_Оптика/Оптика_сценарий_видеолекции.docx.
+-->
+
+<style>
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Noto+Sans+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#EEF1F4; --surface:#FFFFFF; --panel:#F7F9FA;
+  --ink:#16202B; --muted:#5A6874; --line:#D3DAE1;
+  --ray:#D98324; --ray2:#1D7F86; --virt:#98A4B0;
+  --accent:#2B5FD9; --glass:#DCEAEE; --glass2:#BFDCE3;
+  --ok:#2E7D4F; --warn:#B0451C; --dark:#243244;
+  --shadow:0 1px 2px rgba(20,32,45,.06),0 8px 24px rgba(20,32,45,.07);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0E141B; --surface:#161E27; --panel:#1B252F;
+  --ink:#E6EDF3; --muted:#93A2B1; --line:#2A3642;
+  --ray:#F0AC4E; --ray2:#3FB7BF; --virt:#6E7D8C;
+  --accent:#6B9BFF; --glass:#17323A; --glass2:#1E4550;
+  --ok:#5FBE86; --warn:#E8834F; --dark:#0A0F15;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  --bg:#0E141B; --surface:#161E27; --panel:#1B252F;
+  --ink:#E6EDF3; --muted:#93A2B1; --line:#2A3642;
+  --ray:#F0AC4E; --ray2:#3FB7BF; --virt:#6E7D8C;
+  --accent:#6B9BFF; --glass:#17323A; --glass2:#1E4550;
+  --ok:#5FBE86; --warn:#E8834F; --dark:#0A0F15;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:'Noto Sans','Segoe UI',system-ui,sans-serif;
+  font-size:16px; line-height:1.5;
+  padding-inline:16px; padding-block:24px 48px;
+}
+.wrap{max-width:1120px; margin:0 auto; display:flex; flex-direction:column; gap:20px}
+
+header{display:flex; flex-direction:column; gap:8px}
+.kicker{font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ray)}
+h1{margin:0; font-size:clamp(26px,4.2vw,38px); font-weight:700; line-height:1.15; text-wrap:balance}
+.sub{margin:0; color:var(--muted); max-width:62ch}
+
+nav{display:flex; gap:6px; flex-wrap:wrap; background:var(--panel); padding:6px; border-radius:12px; border:1px solid var(--line)}
+nav button{
+  flex:1 1 auto; min-width:118px; border:0; border-radius:8px; padding:10px 12px;
+  background:transparent; color:var(--muted); font:inherit; font-size:15px; font-weight:600; cursor:pointer;
+}
+nav button[aria-selected="true"]{background:var(--surface); color:var(--ink); box-shadow:var(--shadow)}
+nav button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+.stage{display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:18px; align-items:start}
+.stage[hidden]{display:none}
+@media (max-width:860px){ .stage{grid-template-columns:1fr} }
+
+.board{background:var(--surface); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); overflow:hidden}
+.board svg{display:block; width:100%; height:auto; max-width:100%; touch-action:none}
+
+.panel{display:flex; flex-direction:column; gap:14px}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px; box-shadow:var(--shadow)}
+.card h2{margin:0 0 10px; font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--muted)}
+
+.ctl{display:flex; flex-direction:column; gap:5px; margin-bottom:14px}
+.ctl:last-child{margin-bottom:0}
+.ctl .lab{display:flex; justify-content:space-between; align-items:baseline; gap:10px; font-size:14px}
+.ctl .val{font-family:'Noto Sans Mono',ui-monospace,monospace; font-weight:600; font-variant-numeric:tabular-nums; color:var(--accent)}
+input[type=range]{width:100%; accent-color:var(--accent); height:22px}
+input[type=range]:focus-visible{outline:2px solid var(--accent); outline-offset:3px}
+
+.seg{display:flex; gap:6px; flex-wrap:wrap}
+.seg button{flex:1 1 auto; min-width:78px; border:1px solid var(--line); background:var(--panel); color:var(--muted);
+  border-radius:8px; padding:8px 6px; font:inherit; font-size:13.5px; font-weight:600; cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+.seg button:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+.wide{width:100%; border:1px solid var(--accent); background:transparent; color:var(--accent);
+  border-radius:8px; padding:9px 10px; font:inherit; font-size:14px; font-weight:600; cursor:pointer}
+.wide:hover:not(:disabled){background:var(--accent); color:#fff}
+.wide:disabled{opacity:.4; cursor:not-allowed}
+.wide:focus-visible{outline:2px solid var(--ray); outline-offset:2px}
+
+dl.read{margin:0; display:grid; grid-template-columns:1fr auto; gap:7px 12px; align-items:baseline}
+dl.read dt{font-size:14px; color:var(--muted)}
+dl.read dd{margin:0; font-family:'Noto Sans Mono',ui-monospace,monospace; font-weight:600;
+  font-variant-numeric:tabular-nums; text-align:right; font-size:15px}
+
+.pill{display:inline-flex; align-items:center; gap:6px; padding:3px 9px; border-radius:999px;
+  font-size:13px; font-weight:600; line-height:1.45}
+.pill.real{background:rgba(46,125,79,.16); color:var(--ok)}
+.pill.virt{background:rgba(152,164,176,.26); color:var(--muted)}
+.pill.tir{background:rgba(176,69,28,.18); color:var(--warn)}
+
+.note{border-left:3px solid var(--ray); padding:10px 0 10px 13px; font-size:14.5px; color:var(--ink); line-height:1.55}
+.note b{color:var(--ray)}
+
+.legend{display:flex; flex-wrap:wrap; gap:8px 18px; font-size:13.5px; color:var(--muted); padding:0 16px 14px}
+.legend span{display:inline-flex; align-items:center; gap:7px}
+.legend i{width:22px; height:0; border-top-width:3px; border-top-style:solid; display:inline-block}
+.legend i.box{height:12px; width:16px; border:0; border-radius:3px}
+
+.tips{font-size:14px; color:var(--muted); line-height:1.55}
+footer{color:var(--muted); font-size:13.5px; border-top:1px solid var(--line); padding-top:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="kicker">Олимпиадалық физика · 9-сынып</p>
+  <h1>Оптика тренажёры</h1>
+  <p class="sub">Формуланы жаттамай-ақ түсіну үшін: нүктені сүйреп, тұтқаны жылжытып, не өзгеретінін көр. Барлық сызба нақты формулалар бойынша салынады.</p>
+</header>
+
+<nav role="tablist" aria-label="Тақырыптар">
+  <button role="tab" id="tab-shadow" aria-controls="p-shadow" aria-selected="true">Көлеңке</button>
+  <button role="tab" id="tab-mirror" aria-controls="p-mirror" aria-selected="false">Жазық айна</button>
+  <button role="tab" id="tab-r1" aria-controls="p-r1" aria-selected="false">Сыну</button>
+  <button role="tab" id="tab-r2" aria-controls="p-r2" aria-selected="false">Сыну + шағылу</button>
+  <button role="tab" id="tab-fiber" aria-controls="p-fiber" aria-selected="false">Талшықты оптика</button>
+  <button role="tab" id="tab-lens" aria-controls="p-lens" aria-selected="false">Жұқа линза</button>
+</nav>
+
+<!-- ============ КӨЛЕҢКЕ ============ -->
+<section id="p-shadow" role="tabpanel" aria-labelledby="tab-shadow" class="stage">
+  <div>
+    <div class="board">
+      <svg id="svgS" viewBox="0 0 900 520" aria-label="Нүктелік, қос және созылмалы жарық көзінен түсетін көлеңке">
+        <rect x="0" y="0" width="900" height="520" fill="transparent"/>
+        <g id="sCone"></g>
+        <g id="sRays"></g>
+        <g id="sScreen"></g>
+        <g id="sBands"></g>
+        <g id="sObj"></g>
+        <g id="sSrc"></g>
+      </svg>
+      <div class="legend">
+        <span><i class="box" style="background:var(--dark)"></i>Толық көлеңке</span>
+        <span><i class="box" style="background:#8FA3B8"></i>Жарты көлеңке</span>
+        <span><i style="border-top-color:var(--ray)"></i>Шеткі сәулелер</span>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="card">
+      <h2>Жарық көзі</h2>
+      <div class="seg" style="margin-bottom:14px">
+        <button id="sm0" aria-pressed="true">Нүктелік</button>
+        <button id="sm1" aria-pressed="false">Екі нүкте</button>
+        <button id="sm2" aria-pressed="false">Созылмалы</button>
+      </div>
+      <div class="ctl" id="sSizeWrap" hidden>
+        <div class="lab"><label for="sSize">Көз өлшемі</label><span class="val" id="sSizeV">—</span></div>
+        <input type="range" id="sSize" min="20" max="220" step="5" value="90">
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="sOx">Кедергіге дейін</label><span class="val" id="sOxV">—</span></div>
+        <input type="range" id="sOx" min="260" max="680" step="10" value="420">
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="sOh">Кедергі биіктігі</label><span class="val" id="sOhV">—</span></div>
+        <input type="range" id="sOh" min="40" max="220" step="5" value="120">
+      </div>
+      <p class="tips" style="margin:0">Сары нүктені (жарық көзін) сүйреп көр.</p>
+    </div>
+    <div class="card">
+      <h2>Экрандағы өлшемдер</h2>
+      <dl class="read">
+        <dt>Толық көлеңке</dt><dd id="sU">—</dd>
+        <dt>Жарты көлеңке (барлығы)</dt><dd id="sP">—</dd>
+        <dt>Ұлғаю k = L / l</dt><dd id="sK">—</dd>
+      </dl>
+    </div>
+    <div class="card"><div class="note" id="sNote"></div></div>
+  </div>
+</section>
+
+<!-- ============ ЖАЗЫҚ АЙНА ============ -->
+<section id="p-mirror" role="tabpanel" aria-labelledby="tab-mirror" class="stage" hidden>
+  <div>
+    <div class="board">
+      <svg id="svgM" viewBox="0 0 900 520" aria-label="Жазық айнадағы кескін: зат, көз және сәулелер жолы">
+        <rect x="0" y="0" width="900" height="520" fill="transparent"/>
+        <g id="mFov"></g>
+        <line x1="60" y1="260" x2="840" y2="260" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 6"/>
+        <g id="mMirror"></g>
+        <g id="mRays"></g>
+        <g id="mPts"></g>
+      </svg>
+      <div class="legend">
+        <span><i style="border-top-color:var(--ray)"></i>Түскен сәуле</span>
+        <span><i style="border-top-color:var(--ray2)"></i>Шағылған сәуле</span>
+        <span><i style="border-top-color:var(--virt); border-top-style:dashed"></i>Жалғасы (жалған)</span>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="card">
+      <h2>Басқару</h2>
+      <div class="ctl">
+        <div class="lab"><label for="mLen">Айна ұзындығы</label><span class="val" id="mLenV">28 см</span></div>
+        <input type="range" id="mLen" min="60" max="360" step="10" value="280">
+      </div>
+      <p class="tips" style="margin:0">Дөңгелек нүктелерді — <b>S</b> (зат) мен <b>Көз</b> — сүйреп көр.</p>
+    </div>
+    <div class="card">
+      <h2>Өлшемдер</h2>
+      <dl class="read">
+        <dt>S — айнаға дейін</dt><dd id="mD">—</dd>
+        <dt>S′ — айнаға дейін</dt><dd id="mD2">—</dd>
+        <dt>S мен S′ арасы</dt><dd id="mSS">—</dd>
+        <dt>Көз кескінді көре ме</dt><dd id="mSee">—</dd>
+      </dl>
+    </div>
+    <div class="card"><div class="note" id="mNote"></div></div>
+  </div>
+</section>
+
+<!-- ============ СЫНУ (таза) ============ -->
+<section id="p-r1" role="tabpanel" aria-labelledby="tab-r1" class="stage" hidden>
+  <div>
+    <div class="board">
+      <svg id="svgR1" viewBox="0 0 900 520" aria-label="Снеллиус заңы: түскен және сынған сәуле">
+        <rect x="0" y="0" width="900" height="260" class="rTop" fill="var(--panel)"/>
+        <rect x="0" y="260" width="900" height="260" class="rBot" fill="var(--glass)"/>
+        <line x1="0" y1="260" x2="900" y2="260" stroke="var(--ink)" stroke-width="3"/>
+        <line x1="450" y1="40" x2="450" y2="480" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="7 7"/>
+        <g class="rArcs"></g><g class="rRays"></g><g class="rHandle"></g>
+      </svg>
+      <div class="legend">
+        <span><i style="border-top-color:var(--ray)"></i>Түскен сәуле</span>
+        <span><i style="border-top-color:var(--ray2)"></i>Сынған сәуле</span>
+      </div>
+    </div>
+  </div>
+  <div class="panel" id="pan-r1"></div>
+</section>
+
+<!-- ============ СЫНУ + ШАҒЫЛУ ============ -->
+<section id="p-r2" role="tabpanel" aria-labelledby="tab-r2" class="stage" hidden>
+  <div>
+    <div class="board">
+      <svg id="svgR2" viewBox="0 0 900 520" aria-label="Шекарада сәуленің бір бөлігі сынады, бір бөлігі шағылады">
+        <rect x="0" y="0" width="900" height="260" class="rTop" fill="var(--panel)"/>
+        <rect x="0" y="260" width="900" height="260" class="rBot" fill="var(--glass)"/>
+        <line x1="0" y1="260" x2="900" y2="260" stroke="var(--ink)" stroke-width="3"/>
+        <line x1="450" y1="40" x2="450" y2="480" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="7 7"/>
+        <g class="rArcs"></g><g class="rRays"></g><g class="rHandle"></g>
+      </svg>
+      <div class="legend">
+        <span><i style="border-top-color:var(--ray)"></i>Түскен сәуле</span>
+        <span><i style="border-top-color:var(--ray2)"></i>Сынған сәуле</span>
+        <span><i style="border-top-color:#B07A2A"></i>Шағылған бөлігі</span>
+      </div>
+    </div>
+  </div>
+  <div class="panel" id="pan-r2"></div>
+</section>
+
+<!-- ============ ТАЛШЫҚТЫ ОПТИКА ============ -->
+<section id="p-fiber" role="tabpanel" aria-labelledby="tab-fiber" class="stage" hidden>
+  <div>
+    <div class="board">
+      <svg id="svgF" viewBox="0 0 900 380" aria-label="Оптикалық талшықтағы толық ішкі шағылу">
+        <rect x="0" y="0" width="900" height="380" fill="transparent"/>
+        <rect x="120" y="60" width="760" height="60" fill="var(--glass2)"/>
+        <rect x="120" y="260" width="760" height="60" fill="var(--glass2)"/>
+        <rect x="120" y="120" width="760" height="140" fill="var(--glass)"/>
+        <line x1="120" y1="120" x2="880" y2="120" stroke="var(--ink)" stroke-width="2.5"/>
+        <line x1="120" y1="260" x2="880" y2="260" stroke="var(--ink)" stroke-width="2.5"/>
+        <line x1="120" y1="60" x2="120" y2="320" stroke="var(--ink)" stroke-width="3"/>
+        <line x1="120" y1="190" x2="880" y2="190" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="6 8"/>
+        <g id="fRays"></g><g id="fLbl"></g>
+      </svg>
+      <div class="legend">
+        <span><i style="border-top-color:var(--ray)"></i>Талшықтағы сәуле</span>
+        <span><i style="border-top-color:var(--warn)"></i>Сыртқа шыққан сәуле</span>
+        <span><i class="box" style="background:var(--glass)"></i>Өзек (n₁)</span>
+        <span><i class="box" style="background:var(--glass2)"></i>Қабық (n₂)</span>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="card">
+      <h2>Басқару</h2>
+      <div class="ctl">
+        <div class="lab"><label for="fTh">Кіру бұрышы θ</label><span class="val" id="fThV">10°</span></div>
+        <input type="range" id="fTh" min="0" max="60" step="0.5" value="10">
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="fN1">n₁ — өзек</label><span class="val" id="fN1V">1.50</span></div>
+        <input type="range" id="fN1" min="120" max="190" step="1" value="150">
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="fN2">n₂ — қабық</label><span class="val" id="fN2V">1.46</span></div>
+        <input type="range" id="fN2" min="100" max="185" step="1" value="146">
+      </div>
+      <button class="wide" id="fMax" type="button">Қабылдау бұрышына қою</button>
+    </div>
+    <div class="card">
+      <h2>Есептеу</h2>
+      <dl class="read">
+        <dt>Сандық апертура NA</dt><dd id="fNA">—</dd>
+        <dt>Қабылдау бұрышы θmax</dt><dd id="fThMax">—</dd>
+        <dt>Өзек ішіндегі бұрыш θ₁</dt><dd id="fT1">—</dd>
+        <dt>Қабырғаға түсу бұрышы</dt><dd id="fWall">—</dd>
+        <dt>Шектік бұрыш α₀</dt><dd id="fCrit">—</dd>
+        <dt>1 метрде шағылу саны</dt><dd id="fN">—</dd>
+        <dt>Жол оське қарағанда</dt><dd id="fPath">—</dd>
+      </dl>
+      <div style="margin-top:10px"><span id="fState" class="pill real">—</span></div>
+    </div>
+    <div class="card"><div class="note" id="fNote"></div></div>
+  </div>
+</section>
+
+<!-- ============ ЖҰҚА ЛИНЗА ============ -->
+<section id="p-lens" role="tabpanel" aria-labelledby="tab-lens" class="stage" hidden>
+  <div>
+    <div class="board">
+      <svg id="svgL" viewBox="0 0 980 480" aria-label="Жұқа линзадағы кескінді салу">
+        <rect x="0" y="0" width="980" height="480" fill="transparent"/>
+        <line x1="40" y1="250" x2="940" y2="250" stroke="var(--line)" stroke-width="1.5"/>
+        <g id="lLens"></g><g id="lMarks"></g><g id="lRays"></g><g id="lObj"></g>
+      </svg>
+      <div class="legend">
+        <span><i style="border-top-color:var(--ray)"></i>Оське параллель → фокус</span>
+        <span><i style="border-top-color:var(--ray2)"></i>Оптикалық центр арқылы</span>
+        <span><i style="border-top-color:var(--virt); border-top-style:dashed"></i>Жалғасы</span>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="card">
+      <h2>Басқару</h2>
+      <div class="seg" style="margin-bottom:14px">
+        <button id="lConv" aria-pressed="true">Жинағыш</button>
+        <button id="lDiv" aria-pressed="false">Шашыратқыш</button>
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="lF">Фокус қашықтығы |F|</label><span class="val" id="lFV">12 см</span></div>
+        <input type="range" id="lF" min="50" max="200" step="5" value="120">
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="lD">Затқа дейін d</label><span class="val" id="lDV">30 см</span></div>
+        <input type="range" id="lD" min="40" max="420" step="5" value="300">
+      </div>
+      <div class="ctl">
+        <div class="lab"><label for="lH">Зат биіктігі h</label><span class="val" id="lHV">8 см</span></div>
+        <input type="range" id="lH" min="30" max="130" step="5" value="80">
+      </div>
+    </div>
+    <div class="card">
+      <h2>Нәтиже</h2>
+      <dl class="read">
+        <dt>Кескінге дейін f</dt><dd id="lFf">—</dd>
+        <dt>Ұлғайту Γ = f/d</dt><dd id="lG">—</dd>
+        <dt>Кескін биіктігі H</dt><dd id="lH2">—</dd>
+      </dl>
+      <div style="margin-top:10px; display:flex; gap:6px; flex-wrap:wrap">
+        <span id="lKind" class="pill real">—</span><span id="lOrient" class="pill virt">—</span>
+      </div>
+    </div>
+    <div class="card"><div class="note" id="lNote"></div></div>
+  </div>
+</section>
+
+<footer>Масштаб: көлеңке, айна және линза бөлімдерінде 10 пиксель = 1 см. Талшықты оптикада өзектің диаметрі 50 мкм деп алынған.</footer>
+</div>
+
+<script>
+'use strict';
+const SC=10, NS='http://www.w3.org/2000/svg';
+const cm=v=>(v/SC).toFixed(1).replace('.',',');
+const el=id=>document.getElementById(id);
+function mk(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+function clear(g){while(g.firstChild)g.removeChild(g.firstChild);}
+function line(x1,y1,x2,y2,s,w,d){const a={x1,y1,x2,y2,stroke:s,'stroke-width':w,'stroke-linecap':'round'};if(d)a['stroke-dasharray']=d;return mk('line',a);}
+function dot(x,y,r,f,s){const a={cx:x,cy:y,r,fill:f};if(s){a.stroke=s;a['stroke-width']=3;}return mk('circle',a);}
+function txt(x,y,s,f,sz,an){const t=mk('text',{x,y,fill:f,'font-size':sz||17,'font-family':"'Noto Sans',sans-serif",'font-weight':600,'text-anchor':an||'middle'});t.textContent=s;return t;}
+function poly(pts,fill,op){return mk('polygon',{points:pts.map(p=>p.join(',')).join(' '),fill,opacity:op==null?1:op});}
+function arrow(x1,y1,x2,y2,c,w){const g=mk('g',{});g.appendChild(line(x1,y1,x2,y2,c,w));
+  const an=Math.atan2(y2-y1,x2-x1),L=13,s=.45;
+  g.appendChild(mk('path',{d:`M ${x2} ${y2} L ${x2-L*Math.cos(an-s)} ${y2-L*Math.sin(an-s)} L ${x2-L*Math.cos(an+s)} ${y2-L*Math.sin(an+s)} Z`,fill:c}));return g;}
+function midArrow(x1,y1,x2,y2,c,at){const t=at==null?.5:at,mx=x1+(x2-x1)*t,my=y1+(y2-y1)*t,an=Math.atan2(y2-y1,x2-x1),L=14,s=.5;
+  return mk('path',{d:`M ${mx+L*.4*Math.cos(an)} ${my+L*.4*Math.sin(an)} L ${mx-L*Math.cos(an-s)+L*.4*Math.cos(an)} ${my-L*Math.sin(an-s)+L*.4*Math.sin(an)} L ${mx-L*Math.cos(an+s)+L*.4*Math.cos(an)} ${my-L*Math.sin(an+s)+L*.4*Math.sin(an)} Z`,fill:c});}
+
+function draggable(svg,get,set,b){
+  let on=false;
+  const toSvg=ev=>{const r=svg.getBoundingClientRect(),v=svg.viewBox.baseVal;
+    return {x:(ev.clientX-r.left)/r.width*v.width,y:(ev.clientY-r.top)/r.height*v.height};};
+  svg.addEventListener('pointerdown',ev=>{const p=toSvg(ev),c=get();
+    if(Math.hypot(p.x-c.x,p.y-c.y)>34)return; on=true; svg.setPointerCapture(ev.pointerId); ev.preventDefault();});
+  svg.addEventListener('pointermove',ev=>{if(!on)return;const p=toSvg(ev);
+    set(Math.min(b.x2,Math.max(b.x1,p.x)),Math.min(b.y2,Math.max(b.y1,p.y)));});
+  const off=()=>{on=false;};
+  svg.addEventListener('pointerup',off); svg.addEventListener('pointercancel',off);
+}
+
+/* ==================== 1. КӨЛЕҢКЕ ==================== */
+const XS=820;                                  // экран
+const S={mode:0, sx:130, sy:260, size:90, ox:420, oh:120};
+function shadowBand(sx,sy,ox,ot,ob){           // полоса тени от точечного источника
+  const k=(XS-sx)/(ox-sx);
+  return [sy*(1-k)+ot*k, sy*(1-k)+ob*k, k];
+}
+function drawShadow(){
+  const gB=el('sBands'),gC=el('sCone'),gR=el('sRays'),gO=el('sObj'),gS=el('sSrc'),gSc=el('sScreen');
+  [gB,gC,gR,gO,gS,gSc].forEach(clear);
+  const ot=260-S.oh/2, ob=260+S.oh/2, ox=S.ox;
+
+  gSc.appendChild(mk('rect',{x:XS,y:20,width:14,height:480,fill:'#CFCABA'}));
+  gO.appendChild(mk('rect',{x:ox-8,y:ot,width:16,height:S.oh,fill:'var(--ink)',rx:3}));
+  gO.appendChild(txt(ox,ot-14,'Кедергі','var(--ink)',16));
+
+  const clip=(y)=>Math.max(16,Math.min(504,y));
+  const band=(y1,y2,fill,op)=>gB.appendChild(mk('rect',{x:XS-3,y:clip(Math.min(y1,y2)),width:20,
+    height:Math.max(2,clip(Math.max(y1,y2))-clip(Math.min(y1,y2))),fill,opacity:op==null?1:op}));
+  const cone=(sx,sy,y1,y2,op)=>gC.appendChild(poly([[sx,sy],[XS,clip(y1)],[XS,clip(y2)]],'#8FA3B8',op));
+  const ray=(sx,sy,ex,ey,col,w)=>{gR.appendChild(line(sx,sy,XS,ey,col,w||2.5));};
+
+  let uTxt='—',pTxt='—',kTxt='—',note='';
+
+  if(S.mode===0){                               // нүктелік көз
+    const [y1,y2,k]=shadowBand(S.sx,S.sy,ox,ot,ob);
+    cone(S.sx,S.sy,y1,y2,.30); band(y1,y2,'var(--dark)');
+    ray(S.sx,S.sy,XS,y1,'var(--ray)'); ray(S.sx,S.sy,XS,y2,'var(--ray)');
+    gS.appendChild(dot(S.sx,S.sy,11,'var(--ray)'));
+    gS.appendChild(txt(S.sx,S.sy-22,'S','var(--ray)'));
+    uTxt=cm(Math.abs(y2-y1))+' см'; pTxt='жоқ'; kTxt=k.toFixed(2);
+    note='Нүктелік көз тек <b>толық көлеңке</b> береді — шеті өткір. Көлеңкенің биіктігі кедергінің биіктігінен k = L/l есе үлкен.';
+  }
+
+  if(S.mode===1){                               // екі нүктелік көз
+    const d=S.size/2;
+    const A={x:S.sx,y:S.sy-d}, B={x:S.sx,y:S.sy+d};
+    const [a1,a2]=shadowBand(A.x,A.y,ox,ot,ob);
+    const [b1,b2,k]=shadowBand(B.x,B.y,ox,ot,ob);
+    cone(A.x,A.y,a1,a2,.22); cone(B.x,B.y,b1,b2,.22);
+    const lo=Math.max(Math.min(a1,a2),Math.min(b1,b2)), hi=Math.min(Math.max(a1,a2),Math.max(b1,b2));
+    band(Math.min(a1,a2),Math.max(a1,a2),'#8FA3B8'); band(Math.min(b1,b2),Math.max(b1,b2),'#8FA3B8');
+    if(hi>lo) band(lo,hi,'var(--dark)');
+    ray(A.x,A.y,XS,a1,'var(--ray)'); ray(A.x,A.y,XS,a2,'var(--ray)');
+    ray(B.x,B.y,XS,b1,'#B07A2A'); ray(B.x,B.y,XS,b2,'#B07A2A');
+    gS.appendChild(dot(A.x,A.y,10,'var(--ray)')); gS.appendChild(txt(A.x-24,A.y+5,'S₁','var(--ray)',16));
+    gS.appendChild(dot(B.x,B.y,10,'#B07A2A'));    gS.appendChild(txt(B.x-24,B.y+5,'S₂','#B07A2A',16));
+    const full=hi>lo?(hi-lo):0;
+    const un=Math.max(Math.max(a1,a2),Math.max(b1,b2))-Math.min(Math.min(a1,a2),Math.min(b1,b2));
+    uTxt=full>0?cm(full)+' см':'жоқ'; pTxt=cm(un-full)+' см'; kTxt=k.toFixed(2);
+    note=full>0
+      ? 'Екі көздің көлеңкелері <b>қиылысады</b>: қиылысқан жерге екеуінен де жарық түспейді — толық көлеңке. Тек бір көзден жарық түсетін жолақтар — жарты көлеңке.'
+      : 'Көздер бір-бірінен алыстап кетті: көлеңкелер қиылыспайды, сондықтан <b>толық көлеңке мүлде жоқ</b> — экранда екі бөлек жарты көлеңке ғана қалды.';
+  }
+
+  if(S.mode===2){                               // созылмалы көз
+    const a=S.size/2, k=(XS-S.sx)/(ox-S.sx);
+    const T={x:S.sx,y:S.sy-a}, B={x:S.sx,y:S.sy+a};
+    const uL=(S.sy-a)*(1-k)+ot*k, uR=(S.sy+a)*(1-k)+ob*k;
+    const pL=(S.sy+a)*(1-k)+ot*k, pR=(S.sy-a)*(1-k)+ob*k;
+    gC.appendChild(poly([[T.x,T.y],[B.x,B.y],[XS,clip(pR)],[XS,clip(pL)]],'#8FA3B8',.22));
+    band(pL,pR,'#8FA3B8');
+    if(uR>uL) band(uL,uR,'var(--dark)');
+    gS.appendChild(mk('rect',{x:S.sx-7,y:T.y,width:14,height:2*a,fill:'var(--ray)',rx:6}));
+    gS.appendChild(txt(S.sx,T.y-16,'Созылмалы көз','var(--ray)',16));
+    ray(T.x,T.y,XS,(S.sy-a)*(1-k)+ot*k,'var(--ray)'); ray(T.x,T.y,XS,(S.sy-a)*(1-k)+ob*k,'var(--ray)',2);
+    ray(B.x,B.y,XS,(S.sy+a)*(1-k)+ot*k,'var(--ray)',2); ray(B.x,B.y,XS,(S.sy+a)*(1-k)+ob*k,'var(--ray)');
+    const u=Math.max(0,uR-uL);
+    uTxt=u>0?cm(u)+' см':'жоқ'; pTxt=cm((pR-pL)-u)+' см'; kTxt=k.toFixed(2);
+    const amax=S.oh*k/(2*(k-1));
+    note=u>0
+      ? 'Созылмалы көзде екі аймақ пайда болады: <b>толық көлеңке</b> (ешқандай жарық жоқ) және оның айналасындағы <b>жарты көлеңке</b> (көздің бір бөлігінен ғана жарық түседі). Сол себепті көлеңкенің шеті бұлыңғыр.'
+      : 'Көз тым үлкен болып кетті: толық көлеңке жоғалды, тек жарты көлеңке қалды. Бұл '+cm(2*amax)+' см-ден үлкен көзде болады.';
+  }
+
+  el('sU').textContent=uTxt; el('sP').textContent=pTxt; el('sK').textContent=kTxt;
+  el('sNote').innerHTML=note;
+  el('sOxV').textContent=cm(ox-S.sx)+' см';
+  el('sOhV').textContent=cm(S.oh)+' см';
+  el('sSizeV').textContent=cm(S.size)+' см';
+}
+
+/* ==================== 2. ЖАЗЫҚ АЙНА ==================== */
+const MX=480;
+const M={S:{x:200,y:180},E:{x:230,y:400},len:280};
+function drawMirror(){
+  const top=260-M.len/2,bot=260+M.len/2;
+  const gM=el('mMirror'); clear(gM);
+  gM.appendChild(line(MX,top,MX,bot,'var(--ink)',5));
+  for(let y=top;y<bot-6;y+=18) gM.appendChild(line(MX+3,y,MX+17,y+14,'var(--muted)',2.5));
+  const s=M.S,e=M.E,Sp={x:2*MX-s.x,y:s.y};
+  const gF=el('mFov'); clear(gF);
+  const ext=(p,q,t)=>({x:p.x+(q.x-p.x)*t,y:p.y+(q.y-p.y)*t});
+  const a=ext(Sp,{x:MX,y:top},6),b=ext(Sp,{x:MX,y:bot},6);
+  gF.appendChild(mk('path',{d:`M ${MX} ${top} L ${a.x} ${a.y} L ${b.x} ${b.y} L ${MX} ${bot} Z`,fill:'var(--glass)',opacity:.55}));
+  const gR=el('mRays'); clear(gR);
+  let seen=false,P=null;
+  if(Math.abs(e.x-Sp.x)>1e-6){const t=(MX-Sp.x)/(e.x-Sp.x),py=Sp.y+t*(e.y-Sp.y);
+    if(t>0&&t<1&&py>=top&&py<=bot){seen=true;P={x:MX,y:py};}}
+  if(seen){
+    gR.appendChild(line(s.x,s.y,P.x,P.y,'var(--ray)',3.5)); gR.appendChild(midArrow(s.x,s.y,P.x,P.y,'var(--ray)'));
+    gR.appendChild(line(P.x,P.y,e.x,e.y,'var(--ray2)',3.5)); gR.appendChild(midArrow(P.x,P.y,e.x,e.y,'var(--ray2)'));
+    gR.appendChild(line(P.x,P.y,Sp.x,Sp.y,'var(--virt)',2.5,'9 8'));
+  }
+  gR.appendChild(line(s.x,s.y,Sp.x,Sp.y,'var(--virt)',1.5,'3 7'));
+  const gP=el('mPts'); clear(gP);
+  gP.appendChild(dot(Sp.x,Sp.y,10,'none','var(--virt)')); gP.appendChild(txt(Sp.x,Sp.y-20,'S′','var(--virt)'));
+  gP.appendChild(dot(s.x,s.y,12,'var(--ray)'));  gP.appendChild(txt(s.x,s.y-22,'S','var(--ray)'));
+  gP.appendChild(dot(e.x,e.y,12,'var(--ray2)')); gP.appendChild(txt(e.x,e.y+32,'Көз','var(--ray2)'));
+  const d=MX-s.x;
+  el('mD').textContent=cm(d)+' см'; el('mD2').textContent=cm(d)+' см'; el('mSS').textContent=cm(2*d)+' см';
+  el('mSee').textContent=seen?'иә':'жоқ';
+  el('mSee').style.color=seen?'var(--ok)':'var(--warn)';
+  el('mNote').innerHTML=seen
+    ?'Кескін <b>S′</b> — заттың айнаға қатысты симметриялы нүктесі: екеуі де айнадан бірдей қашықтықта. Сәуле нақты S′-тен шықпайды, сондықтан кескін <b>жалған</b>.'
+    :'Көз кескінді көрмейді: S′-тен көзге баратын түзу айнаның шетінен тыс өтеді. <b>Айна ұзындығы</b> көру аймағын шектейді.';
+  el('mLenV').textContent=cm(M.len)+' см';
+}
+
+/* ============ 3–4. СЫНУ (екі бөлім, бір код) ============ */
+function makeRefraction(id, withRefl){
+  const st={a:40,n1:1.00,n2:1.50};
+  const svg=el('svg'+id);
+  const pan=el('pan-'+id.toLowerCase());
+  pan.innerHTML=
+   `<div class="card"><h2>Басқару</h2>
+      <div class="ctl"><div class="lab"><label for="${id}A">Түсу бұрышы α</label><span class="val" id="${id}AV">40,0°</span></div>
+        <input type="range" id="${id}A" min="0" max="89.5" step="0.5" value="40"></div>
+      <div class="ctl"><div class="lab"><label for="${id}N1">n₁ — жоғарғы орта</label><span class="val" id="${id}N1V">1.00</span></div>
+        <input type="range" id="${id}N1" min="100" max="250" step="1" value="100"></div>
+      <div class="ctl"><div class="lab"><label for="${id}N2">n₂ — төменгі орта</label><span class="val" id="${id}N2V">1.50</span></div>
+        <input type="range" id="${id}N2" min="100" max="250" step="1" value="150"></div>
+      <button class="wide" id="${id}Crit" type="button">Шектік бұрышқа қою</button>
+      <p class="tips" style="margin:10px 0 0">Ауа 1.00 · су 1.33 · шыны 1.50 · алмаз 2.42</p>
+    </div>
+    <div class="card"><h2>Есептеу</h2>
+      <dl class="read">
+        <dt>n₁·sin α</dt><dd id="${id}L">—</dd>
+        <dt>n₂·sin β</dt><dd id="${id}R">—</dd>
+        <dt>Сыну бұрышы β</dt><dd id="${id}B">—</dd>
+        <dt>Шектік бұрыш α₀</dt><dd id="${id}C">—</dd>
+      </dl>
+      <div style="margin-top:10px"><span id="${id}S" class="pill real">—</span></div>
+    </div>
+    <div class="card"><div class="note" id="${id}N"></div></div>`;
+
+  const O={x:450,y:260}, Lr=250;
+  function draw(){
+    const a=st.a*Math.PI/180;
+    const gR=svg.querySelector('.rRays'), gA=svg.querySelector('.rArcs'), gH=svg.querySelector('.rHandle');
+    [gR,gA,gH].forEach(clear);
+    svg.querySelector('.rBot').setAttribute('fill', st.n2>=st.n1?'var(--glass2)':'var(--panel)');
+    svg.querySelector('.rTop').setAttribute('fill', st.n2>=st.n1?'var(--panel)':'var(--glass2)');
+
+    const A={x:O.x-Lr*Math.sin(a),y:O.y-Lr*Math.cos(a)};
+    gR.appendChild(line(A.x,A.y,O.x,O.y,'var(--ray)',4));
+    gR.appendChild(midArrow(A.x,A.y,O.x,O.y,'var(--ray)'));
+
+    const sinB=st.n1*Math.sin(a)/st.n2, tir=sinB>1;
+    const grazing=!tir && sinB>0.9995;
+
+    if(withRefl || tir){
+      const Rf={x:O.x+Lr*.8*Math.sin(a),y:O.y-Lr*.8*Math.cos(a)};
+      const w = tir?4:Math.max(1.5, 4*Math.min(1,Math.pow(sinB,6)));
+      gR.appendChild(line(O.x,O.y,Rf.x,Rf.y,tir?'var(--ray)':'#B07A2A',w));
+      gR.appendChild(midArrow(O.x,O.y,Rf.x,Rf.y,tir?'var(--ray)':'#B07A2A'));
+    }
+    let beta=null;
+    if(!tir){
+      beta=Math.asin(Math.min(1,sinB));
+      const B={x:O.x+Lr*Math.sin(beta),y:O.y+Lr*Math.cos(beta)};
+      gR.appendChild(line(O.x,O.y,B.x,B.y,'var(--ray2)',4));
+      gR.appendChild(midArrow(O.x,O.y,B.x,B.y,'var(--ray2)'));
+      const r2=86;
+      gA.appendChild(mk('path',{d:`M ${O.x} ${O.y+r2} A ${r2} ${r2} 0 0 0 ${O.x+r2*Math.sin(beta)} ${O.y+r2*Math.cos(beta)}`,
+        fill:'none',stroke:'var(--ray2)','stroke-width':2.5}));
+      gA.appendChild(txt(O.x+46,O.y+(grazing?-26:62),'β','var(--ray2)',18,'start'));
+      if(grazing) gA.appendChild(txt(O.x+Lr*.55,O.y+30,'сәуле шекара бойымен сырғиды','var(--ray2)',16));
+    }
+    const r1=72;
+    gA.appendChild(mk('path',{d:`M ${O.x-r1*Math.sin(a)} ${O.y-r1*Math.cos(a)} A ${r1} ${r1} 0 0 0 ${O.x} ${O.y-r1}`,
+      fill:'none',stroke:'var(--ray)','stroke-width':2.5}));
+    gA.appendChild(txt(O.x-30-r1*Math.sin(a)/2,O.y-30-r1*Math.cos(a)/2,'α','var(--ray)',18,'end'));
+    gH.appendChild(dot(A.x,A.y,11,'var(--ray)'));
+
+    el(id+'L').textContent=(st.n1*Math.sin(a)).toFixed(3);
+    el(id+'R').textContent=tir?'—':(st.n2*Math.min(1,sinB)).toFixed(3);
+    el(id+'B').textContent=tir?'—':(beta*180/Math.PI).toFixed(1)+'°';
+    const hasCrit=st.n1>st.n2;
+    el(id+'C').textContent=hasCrit?(Math.asin(st.n2/st.n1)*180/Math.PI).toFixed(2)+'°':'жоқ';
+    el(id+'Crit').disabled=!hasCrit;
+    const S2=el(id+'S');
+    if(tir){S2.className='pill tir';S2.textContent='Толық ішкі шағылу';}
+    else if(grazing){S2.className='pill tir';S2.textContent='Дәл шектік бұрыш: β = 90°';}
+    else if(Math.abs(st.n1-st.n2)<1e-9){S2.className='pill virt';S2.textContent='Орталар бірдей — сынбайды';}
+    else if(st.n2>st.n1){S2.className='pill real';S2.textContent='Нормальға жақындады';}
+    else {S2.className='pill real';S2.textContent='Нормальдан алыстады';}
+
+    let note;
+    if(tir) note='α шектік бұрыштан асты: сынған сәуле мүлде жоқ, <b>барлық жарық шағылады</b>. Дәл осы құбылыс талшықты оптиканың негізі.';
+    else if(grazing) note='Бұл — <b>шектік бұрыш</b>. Сынған сәуле шекара бойымен сырғиды (β = 90°). Бұрышты сәл ғана арттырсаң, сәуле сыртқа шықпай қалады.';
+    else if(st.n2>st.n1) note='Тығыз ортаға өткенде сәуле <b>нормальға жақындайды</b>: β &lt; α. Мұнда толық ішкі шағылу мүмкін емес — ол тек тығыздан сирекке өткенде болады.';
+    else if(st.n1>st.n2) note='Сирек ортаға өткенде сәуле <b>нормальдан алыстайды</b>. α-ны үлкейте бер — шектік бұрышта β 90°-қа жетеді.';
+    else note='n₁ = n₂ болғанда шекара «жоқ» сияқты: сәуле бағытын өзгертпейді.';
+    if(withRefl && !tir) note+=' Шағылған бөлігі де сызылған: α өскен сайын ол <b>қалыңдай түседі</b> — шағылатын жарық үлесі артады.';
+    el(id+'N').innerHTML=note;
+
+    el(id+'AV').textContent=st.a.toFixed(1).replace('.',',')+'°';
+    el(id+'N1V').textContent=st.n1.toFixed(2);
+    el(id+'N2V').textContent=st.n2.toFixed(2);
+  }
+  el(id+'A').addEventListener('input',e=>{st.a=+e.target.value;draw();});
+  el(id+'N1').addEventListener('input',e=>{st.n1=+e.target.value/100;draw();});
+  el(id+'N2').addEventListener('input',e=>{st.n2=+e.target.value/100;draw();});
+  el(id+'Crit').addEventListener('click',()=>{
+    if(st.n1<=st.n2)return;
+    st.a=Math.round(Math.asin(st.n2/st.n1)*1800/Math.PI)/10;
+    el(id+'A').value=st.a; draw();
+  });
+  draggable(svg,()=>{const a=st.a*Math.PI/180;return {x:O.x-Lr*Math.sin(a),y:O.y-Lr*Math.cos(a)};},
+    (x,y)=>{const dx=O.x-x,dy=O.y-y;
+      st.a=Math.max(0,Math.min(89.5,Math.round(Math.atan2(Math.max(dx,0),Math.max(dy,1))*1800/Math.PI)/10));
+      el(id+'A').value=st.a; draw();},{x1:0,y1:0,x2:900,y2:259});
+  return draw;
+}
+
+/* ==================== 5. ТАЛШЫҚТЫ ОПТИКА ==================== */
+const F={th:10,n1:1.50,n2:1.46};
+const FX0=120,FX1=880,FY0=120,FY1=260,FYC=190,CORE_UM=50;
+function drawFiber(){
+  const gR=el('fRays'),gL=el('fLbl'); clear(gR); clear(gL);
+  const th=F.th*Math.PI/180;
+  const s1=Math.sin(th)/F.n1;
+  const t1=Math.asin(Math.min(1,s1));                 // бұрыш оське қатысты
+  const wall=Math.PI/2-t1;                            // қабырғаға түсу бұрышы (нормальдан)
+  const crit=F.n2<F.n1?Math.asin(F.n2/F.n1):Math.PI/2;
+  const guided=F.n2<F.n1 && wall>=crit-1e-9;
+  const NA=F.n1>F.n2?Math.sqrt(F.n1*F.n1-F.n2*F.n2):0;
+  const thMax=NA>=1?Math.PI/2:Math.asin(NA);
+
+  // кіру сәулесі (ауада)
+  const inLen=98, ax=FX0-inLen*Math.cos(th), ay=FYC-inLen*Math.sin(th);
+  gR.appendChild(line(ax,ay,FX0,FYC,'var(--ray)',4));
+  gR.appendChild(midArrow(ax,ay,FX0,FYC,'var(--ray)'));
+  // осьпен арадағы θ бұрышы
+  gL.appendChild(mk('path',{d:`M ${FX0-52} ${FYC} A 52 52 0 0 1 ${FX0-52*Math.cos(th)} ${FYC-52*Math.sin(th)}`,
+    fill:'none',stroke:'var(--ray)','stroke-width':2.5}));
+  gL.appendChild(line(FX0-inLen,FYC,FX0,FYC,'var(--muted)',1.2,'6 6'));
+  gL.appendChild(txt(FX0-64,FYC-14,'θ','var(--ray)',18,'end'));
+
+  // трассировка
+  let x=FX0,y=FYC,dx=Math.cos(t1),dy=Math.sin(t1),bounces=0,guard=0;
+  const pts=[[x,y]];
+  while(x<FX1 && guard++<80){
+    const yw=dy>0?FY1:FY0;
+    const tw=Math.abs(dy)<1e-9?Infinity:(yw-y)/dy;
+    const te=(FX1-x)/dx;
+    if(te<=tw){ x=FX1; y+=dy*te; pts.push([x,y]); break; }
+    x+=dx*tw; y=yw; pts.push([x,y]); bounces++;
+    if(!guided){
+      // қабырғадан сыртқа сыну: нормаль тік, сондықтан шыққан сәуле нормальдан out бұрышта
+      const out=Math.asin(Math.min(1,(F.n1/F.n2)*Math.sin(wall)));
+      const sy=dy>0?1:-1, Lo=150;
+      gR.appendChild(line(x,y,x+Lo*Math.sin(out),y+sy*Lo*Math.cos(out),'var(--warn)',4));
+      gR.appendChild(midArrow(x,y,x+Lo*Math.sin(out),y+sy*Lo*Math.cos(out),'var(--warn)'));
+      gR.appendChild(txt(x+Lo*Math.sin(out)+8,y+sy*(Lo*Math.cos(out)+18),'сыртқа шықты','var(--warn)',16,'start'));
+      break;
+    }
+    dy=-dy;
+  }
+  for(let i=0;i<pts.length-1;i++){
+    gR.appendChild(line(pts[i][0],pts[i][1],pts[i+1][0],pts[i+1][1],'var(--ray)',3.5));
+    if(i%2===0) gR.appendChild(midArrow(pts[i][0],pts[i][1],pts[i+1][0],pts[i+1][1],'var(--ray)'));
+  }
+  gL.appendChild(txt(150,FY0-16,'Қабық n₂','var(--ink)',16,'start'));
+  gL.appendChild(txt(150,FY1+30,'Қабық n₂','var(--ink)',16,'start'));
+  gL.appendChild(txt(150,FYC-14,'Өзек n₁','var(--ink)',16,'start'));
+
+  const d=CORE_UM*1e-6, N=Math.tan(t1)/d;
+  el('fNA').textContent=NA>0?NA.toFixed(3):'—';
+  el('fThMax').textContent=NA>0?(NA>=1?'90° (кез келген)':(thMax*180/Math.PI).toFixed(1)+'°'):'—';
+  el('fT1').textContent=(t1*180/Math.PI).toFixed(2)+'°';
+  el('fWall').textContent=(wall*180/Math.PI).toFixed(2)+'°';
+  el('fCrit').textContent=F.n2<F.n1?(crit*180/Math.PI).toFixed(2)+'°':'жоқ';
+  el('fN').textContent=guided?Math.round(N).toLocaleString('ru-RU'):'—';
+  el('fPath').textContent=guided?('+'+((1/Math.cos(t1)-1)*100).toFixed(2)+' %'):'—';
+  const S2=el('fState');
+  if(F.n2>=F.n1){S2.className='pill tir';S2.textContent='n₂ ≥ n₁ — талшық жұмыс істемейді';}
+  else if(guided){S2.className='pill real';S2.textContent='Сәуле талшықта ұсталды';}
+  else {S2.className='pill tir';S2.textContent='Сәуле сыртқа шығып кетті';}
+  el('fNote').innerHTML = F.n2>=F.n1
+    ? 'Қабықтың сыну көрсеткіші өзектікінен кіші болуы <b>міндетті</b>: толық ішкі шағылу тек тығыз ортадан сирекке өткенде болады.'
+    : (guided
+      ? 'Қабырғаға түсу бұрышы шектік бұрыштан үлкен, сондықтан сәуле әр соққанда толығымен шағылады және талшықтан шықпайды. Кіру бұрышы <b>θmax</b>-тан кіші болса, кез келген сәуле осылай ұсталады.'
+      : 'Кіру бұрышы тым үлкен: өзек ішіндегі сәуле қабырғаға тым көлбеу түседі, толық ішкі шағылу шарты орындалмайды және жарық қабыққа өтіп кетеді.');
+  el('fThV').textContent=F.th.toFixed(1).replace('.',',')+'°';
+  el('fN1V').textContent=F.n1.toFixed(2);
+  el('fN2V').textContent=F.n2.toFixed(2);
+}
+
+/* ==================== 6. ЖҰҚА ЛИНЗА ==================== */
+const L={conv:true,F:120,d:300,h:80};
+const LX=490,LY=250;
+function drawLens(){
+  const gL=el('lLens'),gM=el('lMarks'),gR=el('lRays'),gO=el('lObj');
+  [gL,gM,gR,gO].forEach(clear);
+  const top=LY-150,bot=LY+150;
+  gL.appendChild(line(LX,top,LX,bot,'var(--ray2)',5));
+  if(L.conv){
+    gL.appendChild(line(LX,top,LX-15,top+20,'var(--ray2)',5)); gL.appendChild(line(LX,top,LX+15,top+20,'var(--ray2)',5));
+    gL.appendChild(line(LX,bot,LX-15,bot-20,'var(--ray2)',5)); gL.appendChild(line(LX,bot,LX+15,bot-20,'var(--ray2)',5));
+  } else {
+    gL.appendChild(line(LX-15,top,LX+15,top,'var(--ray2)',5)); gL.appendChild(line(LX-15,bot,LX+15,bot,'var(--ray2)',5));
+  }
+  const F0=L.conv?L.F:-L.F;
+  [[-1,'F'],[1,'F'],[-2,'2F'],[2,'2F']].forEach(([k,lab])=>{
+    const x=LX+k*L.F; if(x<50||x>930)return;
+    gM.appendChild(dot(x,LY,5,'var(--muted)')); gM.appendChild(txt(x,LY+28,lab,'var(--muted)',15));
+  });
+  const Ox=LX-L.d,Oy=LY-L.h;
+  gO.appendChild(arrow(Ox,LY,Ox,Oy,'var(--ray)',5)); gO.appendChild(txt(Ox,Oy-14,'Зат','var(--ray)',16));
+  const den=L.d-F0, f=Math.abs(den)<1e-6?Infinity:L.d*F0/den, far=3000;
+  gR.appendChild(line(Ox,Oy,LX,Oy,'var(--ray)',3.5)); gR.appendChild(midArrow(Ox,Oy,LX,Oy,'var(--ray)'));
+  const d1=L.conv?{x:L.F,y:LY-Oy}:{x:L.F,y:Oy-LY}, n1=Math.hypot(d1.x,d1.y);
+  gR.appendChild(line(LX,Oy,LX+d1.x/n1*far,Oy+d1.y/n1*far,'var(--ray)',3.5));
+  if(!L.conv) gR.appendChild(line(LX,Oy,LX-L.F,LY,'var(--virt)',2,'8 7'));
+  const d2x=LX-Ox,d2y=LY-Oy,n2=Math.hypot(d2x,d2y);
+  gR.appendChild(line(Ox,Oy,LX,LY,'var(--ray2)',3.5)); gR.appendChild(midArrow(Ox,Oy,LX,LY,'var(--ray2)'));
+  gR.appendChild(line(LX,LY,LX+d2x/n2*far,LY+d2y/n2*far,'var(--ray2)',3.5));
+  const virt=isFinite(f)&&f<0;
+  let H=0,Ix=0;
+  if(isFinite(f)){
+    Ix=LX+f; H=-L.h*f/L.d; const Iy=LY+H;
+    if(virt){ gR.appendChild(line(LX,Oy,Ix,Iy,'var(--virt)',2.2,'9 8')); gR.appendChild(line(LX,LY,Ix,Iy,'var(--virt)',2.2,'9 8')); }
+    if(Ix>45&&Ix<935&&Math.abs(H)<230){
+      gO.appendChild(arrow(Ix,LY,Ix,Iy,virt?'var(--virt)':'var(--ink)',5));
+      gO.appendChild(txt(Ix,Iy+(Iy<LY?-14:26),'Кескін',virt?'var(--virt)':'var(--ink)',16));
+    }
+  }
+  el('lFV').textContent=cm(L.F)+' см'; el('lDV').textContent=cm(L.d)+' см'; el('lHV').textContent=cm(L.h)+' см';
+  const kind=el('lKind'),ori=el('lOrient');
+  if(!isFinite(f)){
+    el('lFf').textContent='∞'; el('lG').textContent='∞'; el('lH2').textContent='∞';
+    kind.className='pill virt'; kind.textContent='Кескін жоқ';
+    ori.className='pill virt'; ori.textContent='сәулелер параллель';
+    el('lNote').innerHTML='Зат дәл фокуста тұр (d = F). Линзадан кейін сәулелер <b>параллель</b> шығады — кескін шексіздікте.';
+    return;
+  }
+  el('lFf').textContent=cm(Math.abs(f))+' см'+(f<0?' (жалған)':'');
+  el('lG').textContent=Math.abs(f/L.d).toFixed(2);
+  el('lH2').textContent=cm(Math.abs(H))+' см';
+  kind.className=virt?'pill virt':'pill real'; kind.textContent=virt?'Жалған кескін':'Нақты кескін';
+  ori.className='pill virt'; ori.textContent=H>0?'төңкерілген':'тік';
+  if(!L.conv) el('lNote').innerHTML='Шашыратқыш линза <b>әрқашан</b> жалған, тік және кішірейген кескін береді — d қандай болса да.';
+  else if(L.d>2*L.F) el('lNote').innerHTML='d &gt; 2F: кескін <b>нақты, төңкерілген, кішірейген</b>, F мен 2F арасында. Фотоаппарат осылай істейді.';
+  else if(Math.abs(L.d-2*L.F)<6) el('lNote').innerHTML='d = 2F — ерекше нүкте: кескін де 2F-те, өлшемі затпен <b>дәл бірдей</b> (Γ = 1).';
+  else if(L.d>L.F) el('lNote').innerHTML='F &lt; d &lt; 2F: кескін <b>нақты, төңкерілген, ұлғайған</b>, 2F-тен әрі. Проектор осылай істейді.';
+  else el('lNote').innerHTML='d &lt; F: сәулелер қиылыспайды, тек жалғастырулары қиылысады — кескін <b>жалған, тік, ұлғайған</b>. Бұл — лупа.';
+}
+
+/* ==================== қосу ==================== */
+const svgS=el('svgS');
+draggable(svgS,()=>({x:S.sx,y:S.sy}),(x,y)=>{S.sx=Math.min(220,x);S.sy=y;drawShadow();},{x1:40,y1:90,x2:220,y2:430});
+el('sOx').addEventListener('input',e=>{S.ox=+e.target.value;drawShadow();});
+el('sOh').addEventListener('input',e=>{S.oh=+e.target.value;drawShadow();});
+el('sSize').addEventListener('input',e=>{S.size=+e.target.value;drawShadow();});
+[['sm0',0],['sm1',1],['sm2',2]].forEach(([bid,m])=>el(bid).addEventListener('click',()=>{
+  S.mode=m; ['sm0','sm1','sm2'].forEach((b,i)=>el(b).setAttribute('aria-pressed',String(i===m)));
+  el('sSizeWrap').hidden=(m===0);
+  el('sSize').previousElementSibling.querySelector('label').textContent = m===1?'Көздер арасы':'Көз өлшемі';
+  drawShadow();
+}));
+
+draggable(el('svgM'),()=>M.S,(x,y)=>{M.S={x:Math.min(430,x),y};drawMirror();},{x1:90,y1:60,x2:430,y2:460});
+draggable(el('svgM'),()=>M.E,(x,y)=>{M.E={x:Math.min(430,x),y};drawMirror();},{x1:90,y1:60,x2:430,y2:460});
+el('mLen').addEventListener('input',e=>{M.len=+e.target.value;drawMirror();});
+
+const drawR1=makeRefraction('R1',false);
+const drawR2=makeRefraction('R2',true);
+
+el('fTh').addEventListener('input',e=>{F.th=+e.target.value;drawFiber();});
+el('fN1').addEventListener('input',e=>{F.n1=+e.target.value/100;drawFiber();});
+el('fN2').addEventListener('input',e=>{F.n2=+e.target.value/100;drawFiber();});
+el('fMax').addEventListener('click',()=>{
+  if(F.n2>=F.n1)return;
+  const NA=Math.sqrt(F.n1*F.n1-F.n2*F.n2);
+  const deg=NA>=1?60:Math.asin(NA)*180/Math.PI;
+  F.th=Math.min(60,Math.round(deg*2)/2);          // ползунок идёт с шагом 0,5°
+  el('fTh').value=F.th; drawFiber();
+});
+
+el('lF').addEventListener('input',e=>{L.F=+e.target.value;drawLens();});
+el('lD').addEventListener('input',e=>{L.d=+e.target.value;drawLens();});
+el('lH').addEventListener('input',e=>{L.h=+e.target.value;drawLens();});
+el('lConv').addEventListener('click',()=>{L.conv=true;el('lConv').setAttribute('aria-pressed','true');el('lDiv').setAttribute('aria-pressed','false');drawLens();});
+el('lDiv').addEventListener('click',()=>{L.conv=false;el('lDiv').setAttribute('aria-pressed','true');el('lConv').setAttribute('aria-pressed','false');drawLens();});
+
+const TABS=[['tab-shadow','p-shadow'],['tab-mirror','p-mirror'],['tab-r1','p-r1'],['tab-r2','p-r2'],['tab-fiber','p-fiber'],['tab-lens','p-lens']];
+TABS.forEach(([t,p])=>el(t).addEventListener('click',()=>{
+  TABS.forEach(([t2,p2])=>{el(t2).setAttribute('aria-selected',String(t2===t));el(p2).hidden=(p2!==p);});
+}));
+
+drawShadow(); drawMirror(); drawR1(); drawR2(); drawFiber(); drawLens();
+</script>
+</body>
+</html>

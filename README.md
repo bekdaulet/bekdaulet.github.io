@@ -15,8 +15,8 @@ Personal academic website of Bekdaulet Shukirgaliyev. Static HTML and CSS, hoste
 | `robots.txt`, `sitemap.xml` | Search engine hints; `publish.sh` updates the sitemap dates |
 | `publish.sh` | Commit and push everything, then wait for the GitHub Pages build |
 | `physo/` | Unadvertised physics lessons for teaching (Kazakh). Not linked from the main pages, not in the sitemap, noindex on every page. |
-| `physo/lessons/` | One self-contained HTML file per lesson. Filled by `publish.sh` from `~/Documents/personal/teaching/physics_8grade_kz/web/` |
-| `physo/build.py` | Rebuilds `physo/index.html` from the lesson files (title, description, numeric prefix order). Run by `publish.sh` |
+| `physo/lessons/`, `physo/slides/`, `physo/problems/`, `physo/materials/`, `physo/content.md` | Mirrored by `publish.sh` from `~/Documents/personal/teaching/physics_8grade_kz/web/` |
+| `physo/build.py` | Rebuilds `physo/index.html`: lessons, slides and problem sets from the folders, videos/books/extra links from `content.md`. Run by `publish.sh` |
 
 ## Editing text
 
@@ -40,9 +40,11 @@ The three language pages are independent. A change made in `index.html` must be 
 
 ## Physics lessons (/physo)
 
-Cowork writes lessons as HTML into the `web/` folder of the teaching directory
-(rules in that folder's README). Running `./publish.sh` copies them into
-`physo/lessons/`, regenerates the index, and pushes. Nothing else to do.
+Cowork writes lessons as HTML into the `web/` folder of the teaching directory,
+slide decks into `web/slides/`, problem-set PDFs into `web/problems/`, and
+keeps videos, problem books and extra links in `web/content.md` (rules in that
+folder's README). Running `./publish.sh` mirrors all of it into `physo/`,
+regenerates the hub page, and pushes. Nothing else to do.
 The section lives at https://bekdaulet.github.io/physo/ and is deliberately
 not linked from the main site.
 

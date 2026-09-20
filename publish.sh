@@ -28,14 +28,19 @@ if [[ -z "$msg" ]]; then
   msg="Update site $(date '+%Y-%m-%d %H:%M')"
 fi
 
-# Physics lessons: copy finished HTML from the Cowork teaching folder into
-# physo/lessons/, then rebuild physo/index.html from them. Deletions there are
-# not mirrored; remove a lesson from physo/lessons/ by hand if needed.
+# Physics hub (/physo): mirror the Cowork teaching folder's web/ into physo/.
+#   web/*.html              -> physo/lessons/   (one lesson per file)
+#   web/slides|problems|materials/ -> physo/<same>/
+#   web/content.md          -> physo/content.md (videos, books, extra links)
+# Deletions are not mirrored; remove files from physo/ by hand if needed.
 PHYSO_SRC="$HOME/Documents/personal/teaching/physics_8grade_kz/web"
 if [[ -d "$PHYSO_SRC" ]]; then
-  rsync -a --include='*/' --include='*.html' --include='*.png' --include='*.jpg' --include='*.jpeg' \
-        --include='*.svg' --include='*.gif' --include='*.pdf' --include='*.css' --include='*.js' \
-        --exclude='*' "$PHYSO_SRC/" physo/lessons/
+  mkdir -p physo/lessons
+  rsync -a --include='*.html' --exclude='*' "$PHYSO_SRC/" physo/lessons/
+  for sub in slides problems materials; do
+    [[ -d "$PHYSO_SRC/$sub" ]] && rsync -a --exclude='.*' "$PHYSO_SRC/$sub/" "physo/$sub/"
+  done
+  [[ -f "$PHYSO_SRC/content.md" ]] && cp "$PHYSO_SRC/content.md" physo/content.md
 fi
 python3 physo/build.py
 
